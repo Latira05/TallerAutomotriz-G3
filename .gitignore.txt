@@ -1,0 +1,27 @@
+# Carpetas de compilación
+[Bb]in/
+[Oo]bj/
+ 
+# Carpeta de configuración local de Visual Studio (caché, índices)
+.vs/
+ 
+# Archivos de usuario (configuración personal del IDE, no del proyecto)
+*.user
+*.suo
+ 
+# Archivos de configuración con datos sensibles (si los manejas en otro archivo)
+appsettings.Development.json
+appsettings.Local.json
+ 
+# Resultados de pruebas y logs
+TestResults/
+*.log
+ 
+# Carpetas de paquetes NuGet restaurados
+packages/
+*.nupkg
+ 
+# Archivos temporales del sistema operativo
+Thumbs.db
+.DS_Store
+ 
