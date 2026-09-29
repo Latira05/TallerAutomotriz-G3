@@ -1,0 +1,6 @@
+@AOTech.API_HostAddress = http://localhost:5175
+
+GET {{AOTech.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
