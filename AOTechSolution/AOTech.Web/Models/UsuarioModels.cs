@@ -54,6 +54,18 @@ public class UsuarioCrearViewModel
     public List<RolViewModel> RolesDisponibles { get; set; } = new();
 }
 
+public class LoginViewModel
+{
+    [Required(ErrorMessage = "Escribe un nombre de usuario.")]
+    [Display(Name = "Nombre de usuario")]
+    public string NombreUsuario { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Escribe la contraseña.")]
+    [DataType(DataType.Password)]
+    [Display(Name = "Contraseña")]
+    public string Contrasena { get; set; } = string.Empty;
+}
+
 // Formulario de edición (datos básicos + rol; el estado activo/inactivo
 // se maneja aparte, con un botón directo en el listado)
 public class UsuarioEditarViewModel

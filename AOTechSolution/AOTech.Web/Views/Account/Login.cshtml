@@ -1,0 +1,44 @@
+@model AOTech.Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Iniciar sesión</h1>
+            <p>Accede al sistema con tu nombre de usuario y contraseña.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Login" method="post">
+            <input type="hidden" name="returnUrl" value="@(ViewData["ReturnUrl"] ?? string.Empty)" />
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="NombreUsuario"></label>
+                <input asp-for="NombreUsuario" autocomplete="username" />
+                <span asp-validation-for="NombreUsuario" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Contrasena"></label>
+                <input asp-for="Contrasena" type="password" autocomplete="current-password" />
+                <span asp-validation-for="Contrasena" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Entrar</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
