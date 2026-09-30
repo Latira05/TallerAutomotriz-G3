@@ -1,0 +1,74 @@
+﻿@model List<AOTech.Web.Controllers.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Listado de usuarios";
+}
+
+<div class="container mt-4">
+
+    <h1>Listado de usuarios</h1>
+
+    <p>
+        Usuarios registrados en el sistema.
+    </p>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No existen usuarios registrados.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Nombre completo</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Fecha de creación</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var usuario in Model)
+                {
+                    <tr>
+                        <td>@usuario.UsuarioId</td>
+
+                        <td>@usuario.NombreUsuario</td>
+
+                        <td>@usuario.NombreCompleto</td>
+
+                        <td>@usuario.Correo</td>
+
+                        <td>@usuario.NombreRol</td>
+
+                        <td>
+                            @if (usuario.EstaActivo)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactivo</span>
+                            }
+                        </td>
+
+                        <td>
+                            @usuario.FechaCreacion.ToString("dd/MM/yyyy")
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+
+</div>
