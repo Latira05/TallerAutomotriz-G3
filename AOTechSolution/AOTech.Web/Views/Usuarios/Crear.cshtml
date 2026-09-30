@@ -1,0 +1,68 @@
+﻿@model AOTech.Web.Models.UsuarioCrearViewModel
+
+@{
+    ViewData["Title"] = "Nuevo usuario";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Nuevo usuario</h1>
+            <p>Crea una cuenta de acceso y asígnale un rol dentro del sistema.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Crear" method="post">
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="NombreUsuario"></label>
+                <input asp-for="NombreUsuario" autocomplete="off" />
+                <span asp-validation-for="NombreUsuario" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" type="email" autocomplete="off" />
+                <span asp-validation-for="Correo" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="NombreCompleto"></label>
+                <input asp-for="NombreCompleto" autocomplete="off" />
+                <span asp-validation-for="NombreCompleto" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Contrasena"></label>
+                <input asp-for="Contrasena" type="password" autocomplete="new-password" />
+                <span class="ayuda">Mínimo 6 caracteres.</span>
+                <span asp-validation-for="Contrasena" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="RolId"></label>
+                <select asp-for="RolId">
+                    <option value="">Selecciona un rol…</option>
+                    @foreach (var rol in Model.RolesDisponibles)
+                    {
+                        <option value="@rol.RolId">@rol.NombreRol</option>
+                    }
+                </select>
+                <span asp-validation-for="RolId" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Crear usuario</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

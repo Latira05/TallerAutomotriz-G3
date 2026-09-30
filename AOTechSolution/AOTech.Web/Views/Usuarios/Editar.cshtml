@@ -1,0 +1,73 @@
+﻿@model AOTech.Web.Models.UsuarioEditarViewModel
+
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Editar usuario</h1>
+            <p>
+                Actualiza los datos de la cuenta o cambia su rol.
+                @if (Model.EstaActivo)
+                {
+                    <span class="pastilla pastilla--activo">Activo</span>
+                }
+                else
+                {
+                    <span class="pastilla pastilla--inactivo">Inactivo</span>
+                }
+            </p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Editar" method="post">
+            <input type="hidden" asp-for="UsuarioId" />
+            <input type="hidden" asp-for="EstaActivo" />
+
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="NombreUsuario"></label>
+                <input asp-for="NombreUsuario" autocomplete="off" />
+                <span asp-validation-for="NombreUsuario" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" type="email" autocomplete="off" />
+                <span asp-validation-for="Correo" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="NombreCompleto"></label>
+                <input asp-for="NombreCompleto" autocomplete="off" />
+                <span asp-validation-for="NombreCompleto" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="RolId"></label>
+                <select asp-for="RolId">
+                    @foreach (var rol in Model.RolesDisponibles)
+                    {
+                        <option value="@rol.RolId">@rol.NombreRol</option>
+                    }
+                </select>
+                <span asp-validation-for="RolId" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

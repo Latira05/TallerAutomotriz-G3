@@ -1,26 +1,102 @@
-﻿
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Panel";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<section class="hero">
+    <div>
+        <span class="hero__etiqueta">SISTEMA INTERNO — A.O TECH</span>
+        <h1>Todo el taller, en un solo panel.</h1>
+        <p class="intro">
+            Clientes, vehículos, órdenes de servicio y cartera de descuentos,
+            centralizados para que recepción y mecánica trabajen sobre la
+            misma información, sin hojas sueltas ni WhatsApp perdido.
+        </p>
+        <div class="hero__acciones">
+            <a asp-controller="Usuarios" asp-action="Index" class="btn btn--primario">Gestionar usuarios</a>
+            <a href="#modulos" class="btn btn--fantasma">Ver módulos</a>
+        </div>
+    </div>
 
-    <p>
-        Learn about
-        <a href="https://learn.microsoft.com/aspnet/core">
-            building Web apps with ASP.NET Core
-        </a>.
-    </p>
+    <div class="ficha">
+        <div class="ficha__cabecera">
+            <span>ORDEN #0241</span>
+            <span class="pastilla pastilla--proceso">En proceso</span>
+        </div>
+        <div class="ficha__cuerpo">
+            <dl class="ficha__fila">
+                <dt>Cliente</dt>
+                <dd>María Jiménez — BP‑0118</dd>
+            </dl>
+            <dl class="ficha__fila">
+                <dt>Vehículo</dt>
+                <dd>CRC‑482 · Hyundai Tucson</dd>
+            </dl>
+            <dl class="ficha__fila">
+                <dt>Servicio</dt>
+                <dd>Cambio de frenos</dd>
+            </dl>
+            <dl class="ficha__fila">
+                <dt>Mecánico</dt>
+                <dd>J. Solano</dd>
+            </dl>
+        </div>
+    </div>
+</section>
 
-    @* @if (User.IsInRole("Administrador")) DESACTIVADO PARA PRUEBAS 
-        {
-    *@
-        <a asp-controller="Usuarios"
-           asp-action="Index"
-           class="btn btn-primary">
-            Gestionar usuarios
+<section class="modulos" id="modulos">
+    <div class="modulos__titulo">
+        <h2>Módulos del sistema</h2>
+        <span>7 bahías · 1 activa</span>
+    </div>
+
+    <div class="grilla-modulos">
+        <a asp-controller="Usuarios" asp-action="Index" class="modulo-card modulo-card--activa">
+            <span class="modulo-card__bahia">BAHÍA 01</span>
+            <h3>Usuarios</h3>
+            <p>Cuentas de acceso, roles y permisos del personal del taller.</p>
+            <span class="modulo-card__enlace">Entrar →</span>
         </a>
-   @* } *@
-</div>
-```
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 02</span>
+            <h3>Clientes y vehículos</h3>
+            <p>Registro de clientes, vehículos asociados y código de fidelidad.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 03</span>
+            <h3>Órdenes de servicio</h3>
+            <p>Ingreso de vehículos, trabajos realizados y pagos.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 04</span>
+            <h3>Citas</h3>
+            <p>Agenda de horarios, capacidad de bahías y reglas de bloqueo.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 05</span>
+            <h3>Inventario</h3>
+            <p>Repuestos, existencias y movimientos de entrada/salida.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 06</span>
+            <h3>Membresías y cartera</h3>
+            <p>Código BP, precios diferenciados y estado de membresía.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+
+        <div class="modulo-card modulo-card--pendiente">
+            <span class="modulo-card__bahia">BAHÍA 07</span>
+            <h3>Cursos</h3>
+            <p>Catálogo de cursos y acceso a video pagado.</p>
+            <span class="modulo-card__enlace">Próximamente</span>
+        </div>
+    </div>
+</section>

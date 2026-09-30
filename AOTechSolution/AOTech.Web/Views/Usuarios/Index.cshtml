@@ -1,167 +1,93 @@
-﻿@model List<AOTech.Web.Controllers.UsuarioViewModel>
+﻿@model List<AOTech.Web.Models.UsuarioListaViewModel>
 
 @{
-    ViewData["Title"] = "Listado de usuarios";
+    ViewData["Title"] = "Usuarios";
 }
 
-<div class="container mt-4">
-
-    <h1>Listado de usuarios</h1>
-
-    <p>
-        Usuarios registrados en el sistema.
-    </p>
-
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Mensaje"]
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Usuarios</h1>
+            <p>Cuentas de acceso del personal: administradores, recepción, mecánica y clientes con acceso al sistema.</p>
         </div>
-    }
+        <a asp-action="Crear" class="btn btn--primario">Nuevo usuario</a>
+    </div>
 
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alerta alerta--error">@ViewBag.Error</div>
     }
 
-    @if (Model == null || !Model.Any())
-    {
-        <div class="alert alert-info">
-            No existen usuarios registrados.
-        </div>
-    }
-    else
-    {
-        <table class="table table-bordered table-striped">
-
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Nombre completo</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Fecha de creación</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                @foreach (var usuario in Model)
-                {
+    <div class="tabla-wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="tabla-vacia">
+                <strong>Todavía no hay usuarios registrados</strong>
+                Crea el primero para empezar a dar acceso al sistema.
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
                     <tr>
-                        <td>@usuario.UsuarioId</td>
-
-                        <td>@usuario.NombreUsuario</td>
-
-                        <td>@usuario.NombreCompleto</td>
-
-                        <td>@usuario.Correo</td>
-
-                        <td>
-                            @usuario.NombreRol
-                        </td>
-
-                        <td>
-                            @if (usuario.EstaActivo)
-                            {
-                                <span class="badge bg-success">
-                                    Activo
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">
-                                    Inactivo
-                                </span>
-                            }
-                        </td>
-
-                        <td>
-                            @usuario.FechaCreacion.ToString("dd/MM/yyyy")
-                        </td>
-
-                        <td>
-
-                            @if (usuario.EstaActivo)
-                            {
-                                <!-- CAMBIAR ROL -->
-                                <form asp-action="CambiarRol"
-                                      method="post"
-                                      class="mb-2">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@usuario.UsuarioId" />
-
-                                    <select name="rolId"
-                                            class="form-select form-select-sm mb-1">
-
-                                        <option value="1">
-                                            Administrador
-                                        </option>
-
-                                        <option value="2">
-                                            Recepcionista
-                                        </option>
-
-                                        <option value="3">
-                                            Mecánico
-                                        </option>
-
-                                        <option value="4">
-                                            Cliente
-                                        </option>
-
-                                    </select>
-
-                                    <button type="submit"
-                                            class="btn btn-primary btn-sm">
-                                        Cambiar rol
-                                    </button>
-
-                                </form>
-
-
-                                <!-- DESACTIVAR -->
-                                <form asp-action="Desactivar"
-                                      method="post">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@usuario.UsuarioId" />
-
-                                    <button type="submit"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Está seguro de desactivar este usuario?');">
-                                        Desactivar
-                                    </button>
-
-                                </form>
-                            }
-                            else
-                            {
-                                <span class="text-muted">
-                                    Usuario inactivo
-                                </span>
-                            }
-
-                        </td>
-
+                        <th>Usuario</th>
+                        <th>Nombre completo</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Creado</th>
+                        <th></th>
                     </tr>
-                }
-
-            </tbody>
-
-        </table>
-    }
-
-</div>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td class="celda-mono">@usuario.NombreUsuario</td>
+                            <td>@usuario.NombreCompleto</td>
+                            <td>@usuario.Correo</td>
+                            <td>@usuario.Rol</td>
+                            <td>
+                                @if (usuario.EstaActivo)
+                                {
+                                    <span class="pastilla pastilla--activo">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla pastilla--inactivo">Inactivo</span>
+                                }
+                            </td>
+                            <td class="celda-mono">@usuario.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <div class="celda-acciones">
+                                    <a asp-action="Editar" asp-route-id="@usuario.UsuarioId" class="btn btn--fantasma btn--pequeno">Editar</a>
+                                    <form asp-action="CambiarEstado" method="post">
+                                        <input type="hidden" name="id" value="@usuario.UsuarioId" />
+                                        <input type="hidden" name="activarlo" value="@(!usuario.EstaActivo)" />
+                                        @if (usuario.EstaActivo)
+                                        {
+                                            <button type="submit" class="btn btn--peligro btn--pequeno">Desactivar</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn--fantasma btn--pequeno">Activar</button>
+                                        }
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

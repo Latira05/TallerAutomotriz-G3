@@ -8,10 +8,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AOTechDbContext>(opciones =>
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("AOTechBD")));
 
+// Cliente HTTP para consumir AOTech.API
+builder.Services.AddHttpClient("AOTechApi", cliente =>
+{
+    cliente.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
