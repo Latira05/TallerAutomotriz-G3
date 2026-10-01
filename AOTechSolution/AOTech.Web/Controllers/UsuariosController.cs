@@ -3,12 +3,13 @@ using System.Text;
 using AOTech.Data.Contexto;
 using AOTech.Data.Modelos;
 using AOTech.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AOTech.Web.Controllers
 {
-    // [Authorize(Roles = "Administrador")] DESACTIVADO PARA PRUEBAS
+    [Authorize(Roles = "Administrador")]
     public class UsuariosController : Controller
     {
         private readonly AOTechDbContext _contexto;
