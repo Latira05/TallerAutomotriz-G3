@@ -1,5 +1,6 @@
 using AOTech.Data.Contexto;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,14 @@ builder.Services.AddHttpClient("AOTechApi", cliente =>
 {
     cliente.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!);
 });
+// Autenticación por cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.Cookie.Name = "AOTech.Auth";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
 
 var app = builder.Build();
 
@@ -28,7 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+// Añadido middleware de autenticación
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
