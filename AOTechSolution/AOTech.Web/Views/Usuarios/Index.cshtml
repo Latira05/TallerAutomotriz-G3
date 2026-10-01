@@ -71,15 +71,27 @@
                                 <div class="celda-acciones">
                                     <a asp-action="Editar" asp-route-id="@usuario.UsuarioId" class="btn btn--fantasma btn--pequeno">Editar</a>
                                     <form asp-action="CambiarEstado" method="post">
+                                        @Html.AntiForgeryToken()
+
                                         <input type="hidden" name="id" value="@usuario.UsuarioId" />
-                                        <input type="hidden" name="activarlo" value="@(!usuario.EstaActivo)" />
+
                                         @if (usuario.EstaActivo)
                                         {
-                                            <button type="submit" class="btn btn--peligro btn--pequeno">Desactivar</button>
+                                            <button type="submit"
+                                                    name="activarlo"
+                                                    value="false"
+                                                    class="btn btn--peligro btn--pequeno">
+                                                Desactivar
+                                            </button>
                                         }
                                         else
                                         {
-                                            <button type="submit" class="btn btn--fantasma btn--pequeno">Activar</button>
+                                            <button type="submit"
+                                                    name="activarlo"
+                                                    value="true"
+                                                    class="btn btn--fantasma btn--pequeno">
+                                                Activar
+                                            </button>
                                         }
                                     </form>
                                 </div>

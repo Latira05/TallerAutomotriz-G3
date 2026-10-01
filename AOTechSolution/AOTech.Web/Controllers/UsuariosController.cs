@@ -211,18 +211,33 @@ namespace AOTech.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CambiarEstado(int id, bool activarlo)
         {
-            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.UsuarioId == id);
+            Console.WriteLine("======================================");
+            Console.WriteLine($"ID recibido: {id}");
+            Console.WriteLine($"activarlo recibido: {activarlo}");
+
+            var usuario = await _contexto.Usuarios
+                .FirstOrDefaultAsync(u => u.UsuarioId == id);
 
             if (usuario == null)
             {
+                Console.WriteLine("USUARIO NO ENCONTRADO");
+
                 TempData["Error"] = "El usuario no existe.";
                 return RedirectToAction(nameof(Index));
             }
 
+            Console.WriteLine($"EstaActivo ANTES: {usuario.EstaActivo}");
+
             usuario.EstaActivo = activarlo;
+
+            Console.WriteLine($"EstaActivo DESPUÉS: {usuario.EstaActivo}");
+
             usuario.FechaActualizacion = DateTime.Now;
 
             await _contexto.SaveChangesAsync();
+
+            Console.WriteLine("CAMBIOS GUARDADOS");
+            Console.WriteLine("======================================");
 
             TempData["Exito"] = activarlo
                 ? "Usuario reactivado correctamente."
