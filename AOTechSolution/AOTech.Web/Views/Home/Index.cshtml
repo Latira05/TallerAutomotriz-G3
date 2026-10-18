@@ -46,7 +46,7 @@
 <section class="modulos" id="modulos">
     <div class="modulos__titulo">
         <h2>Módulos del sistema</h2>
-        <span>7 bahías · 1 activa</span>
+        <span>7 bahías · 2 activas</span>
     </div>
 
     <div class="grilla-modulos">
@@ -57,12 +57,12 @@
             <span class="modulo-card__enlace">Entrar →</span>
         </a>
 
-        <div class="modulo-card modulo-card--pendiente">
+        <a asp-controller="Clientes" asp-action="Index" class="modulo-card modulo-card--activa">
             <span class="modulo-card__bahia">BAHÍA 02</span>
-            <h3>Clientes y vehículos</h3>
-            <p>Registro de clientes, vehículos asociados y código de fidelidad.</p>
-            <span class="modulo-card__enlace">Próximamente</span>
-        </div>
+            <h3>Clientes</h3>
+            <p>Registro de clientes, datos de contacto y código de cliente frecuente.</p>
+            <span class="modulo-card__enlace">Entrar →</span>
+        </a>
 
         <div class="modulo-card modulo-card--pendiente">
             <span class="modulo-card__bahia">BAHÍA 03</span>

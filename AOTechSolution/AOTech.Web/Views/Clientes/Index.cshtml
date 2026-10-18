@@ -1,0 +1,114 @@
+﻿@model List<AOTech.Web.Models.ClienteListaViewModel>
+
+@{
+    ViewData["Title"] = "Clientes";
+    var buscar = ViewBag.Buscar as string;
+    var hayBusqueda = !string.IsNullOrWhiteSpace(buscar);
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Clientes</h1>
+            <p>Datos de contacto y código de cliente frecuente de quienes confían su vehículo al taller.</p>
+        </div>
+        <a asp-action="Crear" class="btn btn--primario">Nuevo cliente</a>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <form method="get" asp-action="Index" class="barra-busqueda">
+        <input type="search" name="buscar" value="@buscar" placeholder="Buscar por código, nombre, correo o teléfono" />
+        <button type="submit" class="btn btn--fantasma">Buscar</button>
+        @if (hayBusqueda)
+        {
+            <a asp-action="Index" class="btn btn--fantasma">Limpiar</a>
+        }
+    </form>
+
+    <div class="tabla-wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="tabla-vacia">
+                @if (hayBusqueda)
+                {
+                    <strong>Sin resultados</strong>
+                    <text>No hay clientes que coincidan con "@buscar".</text>
+                }
+                else
+                {
+                    <strong>Todavía no hay clientes registrados</strong>
+                    <text>Registra el primero para empezar a llevar su historial.</text>
+                }
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre completo</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Registro</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cliente in Model)
+                    {
+                        <tr>
+                            <td class="celda-mono">@cliente.CodigoClienteFrecuente</td>
+                            <td>@cliente.NombreCompleto</td>
+                            <td>@cliente.Correo</td>
+                            <td class="celda-mono">@(string.IsNullOrWhiteSpace(cliente.Telefono) ? "—" : cliente.Telefono)</td>
+                            <td>
+                                @if (cliente.EstaActivo)
+                                {
+                                    <span class="pastilla pastilla--activo">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla pastilla--inactivo">Inactivo</span>
+                                }
+                            </td>
+                            <td class="celda-mono">@cliente.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <div class="celda-acciones">
+                                    <a asp-action="Editar" asp-route-id="@cliente.ClienteId" class="btn btn--fantasma btn--pequeno">Editar</a>
+                                    <form asp-action="CambiarEstado" method="post">
+                                        <input type="hidden" name="id" value="@cliente.ClienteId" />
+                                        @* Importante: se escribe como texto "true"/"false". Si se usara un bool
+                                           directo en el atributo, Razor omite el atributo cuando vale false y
+                                           escribe value="value" cuando vale true. *@
+                                        <input type="hidden" name="activarlo" value="@(cliente.EstaActivo ? "false" : "true")" />
+                                        @if (cliente.EstaActivo)
+                                        {
+                                            <button type="submit" class="btn btn--peligro btn--pequeno"
+                                                    onclick="return confirm('¿Desactivar a este cliente? También se desactivará su acceso al sistema.');">
+                                                Desactivar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn--fantasma btn--pequeno">Activar</button>
+                                        }
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>
