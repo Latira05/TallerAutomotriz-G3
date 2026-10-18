@@ -17,7 +17,11 @@
             <nav>
                 <ul class="nav-principal">
                     <li><a asp-controller="Home" asp-action="Index">Panel</a></li>
-                    <li><a asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                    @if (User?.IsInRole("Administrador") == true)
+                    {
+                        <li><a asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                    }
+
                     @if (User?.Identity?.IsAuthenticated == true)
                     {
                         <li><span>@User.Identity.Name</span></li>
