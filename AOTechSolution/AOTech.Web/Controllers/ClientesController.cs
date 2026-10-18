@@ -3,12 +3,13 @@ using System.Text;
 using AOTech.Data.Contexto;
 using AOTech.Data.Modelos;
 using AOTech.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AOTech.Web.Controllers
 {
-    // [Authorize(Roles = "Administrador,Recepcionista")] DESACTIVADO PARA PRUEBAS
+    [Authorize(Roles = "Administrador,Recepcionista")]
     public class ClientesController : Controller
     {
         private readonly AOTechDbContext _contexto;
@@ -22,7 +23,7 @@ namespace AOTech.Web.Controllers
         }
 
         // =====================================================
-        // LISTADO DE CLIENTES (con búsqueda opcional)
+        // LISTADO DE CLIENTES
         // =====================================================
         public async Task<IActionResult> Index(string? buscar)
         {
@@ -106,7 +107,7 @@ namespace AOTech.Web.Controllers
 
             var (hash, salt) = GenerarHash(modelo.Contrasena);
 
-            // Todo o nada: si algo falla a la mitad, no queda un usuario "huérfano" sin cliente.
+   
             await using var transaccion = await _contexto.Database.BeginTransactionAsync();
 
             try
@@ -127,7 +128,7 @@ namespace AOTech.Web.Controllers
                 _contexto.Usuarios.Add(usuario);
                 await _contexto.SaveChangesAsync();
 
-                // 2) Cliente (con un código temporal único, porque la columna es NOT NULL)
+                // 2) Cliente
                 var cliente = new Cliente
                 {
                     UsuarioId = usuario.UsuarioId,
@@ -141,7 +142,7 @@ namespace AOTech.Web.Controllers
                 _contexto.Clientes.Add(cliente);
                 await _contexto.SaveChangesAsync();
 
-                // 3) Código definitivo de cliente frecuente, basado en el Id (CF-00001, CF-00002...)
+                // 3) Código de cliente frecuente, basado en el Id (CF-00001, CF-00002...)
                 cliente.CodigoClienteFrecuente = $"CF-{cliente.ClienteId:D5}";
                 await _contexto.SaveChangesAsync();
 
@@ -253,8 +254,6 @@ namespace AOTech.Web.Controllers
 
         // =====================================================
         // ACTIVAR / DESACTIVAR
-        // Mantiene sincronizada la cuenta de acceso: un cliente
-        // desactivado tampoco puede entrar al sistema.
         // =====================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
