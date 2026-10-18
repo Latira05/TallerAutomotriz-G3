@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var controlador = ViewContext.RouteData.Values["controller"]?.ToString();
+    var puedeVerClientes = User?.IsInRole("Administrador") == true || User?.IsInRole("Recepcionista") == true;
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -16,10 +20,14 @@
             <a asp-controller="Home" asp-action="Index" class="marca">A<span>.</span>O TECH</a>
             <nav>
                 <ul class="nav-principal">
-                    <li><a asp-controller="Home" asp-action="Index">Panel</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" class="@(controlador == "Home" ? "activo" : "")">Panel</a></li>
                     @if (User?.IsInRole("Administrador") == true)
                     {
-                        <li><a asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                        <li><a asp-controller="Usuarios" asp-action="Index" class="@(controlador == "Usuarios" ? "activo" : "")">Usuarios</a></li>
+                    }
+                    @if (puedeVerClientes)
+                    {
+                        <li><a asp-controller="Clientes" asp-action="Index" class="@(controlador == "Clientes" ? "activo" : "")">Clientes</a></li>
                     }
 
                     @if (User?.Identity?.IsAuthenticated == true)
@@ -47,6 +55,8 @@
         </div>
     </footer>
 
+    @* jQuery: lo necesitan los scripts de validación en el navegador (_ValidationScriptsPartial) *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
