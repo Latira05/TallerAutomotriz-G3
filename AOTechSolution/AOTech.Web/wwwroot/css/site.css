@@ -602,3 +602,92 @@ table.tabla {
         transition: none !important;
     }
 }
+
+
+/* ==========================================================================
+   Módulo Clientes 
+   ========================================================================== */
+
+.barra-busqueda {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+    .barra-busqueda input[type="search"] {
+        flex: 1 1 280px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-s);
+        padding: 10px 12px;
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+    }
+
+        .barra-busqueda input[type="search"]:focus {
+            border-color: var(--accent);
+        }
+
+
+.form-card--ancho {
+    max-width: 720px;
+}
+
+.campos-dos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+
+.form-subtitulo {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.form-subtitulo--sep {
+    margin-top: 28px;
+}
+
+
+.campo textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    resize: vertical;
+}
+
+    .campo textarea:focus {
+        border-color: var(--accent);
+    }
+
+.codigo-cliente {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    padding: 2px 8px;
+    margin-right: 8px;
+    color: var(--text);
+}
+
+@media (max-width: 560px) {
+    .campos-dos {
+        grid-template-columns: 1fr;
+    }
+}

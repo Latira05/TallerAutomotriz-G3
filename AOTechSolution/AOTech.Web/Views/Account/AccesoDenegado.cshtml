@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Acceso denegado";
+}
+
+<section class="seccion">
+
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Acceso denegado</h1>
+
+            <p>
+                No tienes permisos suficientes para acceder a esta sección.
+            </p>
+        </div>
+    </div>
+
+    <div class="form-card">
+
+        <p>
+            Esta sección solamente está disponible para usuarios
+            con permisos de Administrador.
+        </p>
+
+        <div class="form-acciones">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn--primario">
+                Volver al inicio
+            </a>
+
+            <form asp-controller="Account"
+                  asp-action="Logout"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="btn btn--fantasma">
+                    Cerrar sesión
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
