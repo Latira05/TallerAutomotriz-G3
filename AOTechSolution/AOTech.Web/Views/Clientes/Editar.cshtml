@@ -1,0 +1,81 @@
+﻿@model AOTech.Web.Models.ClienteEditarViewModel
+
+@{
+    ViewData["Title"] = "Editar cliente";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Editar cliente</h1>
+            <p>
+                <span class="codigo-cliente">@Model.CodigoClienteFrecuente</span>
+                @if (Model.EstaActivo)
+                {
+                    <span class="pastilla pastilla--activo">Activo</span>
+                }
+                else
+                {
+                    <span class="pastilla pastilla--inactivo">Inactivo</span>
+                }
+            </p>
+        </div>
+    </div>
+
+    <div class="form-card form-card--ancho">
+        <form asp-action="Editar" method="post">
+            <input type="hidden" asp-for="ClienteId" />
+            <input type="hidden" asp-for="CodigoClienteFrecuente" />
+            <input type="hidden" asp-for="EstaActivo" />
+
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <h2 class="form-subtitulo">Datos del cliente</h2>
+
+            <div class="campo">
+                <label asp-for="NombreCompleto"></label>
+                <input asp-for="NombreCompleto" autocomplete="off" />
+                <span asp-validation-for="NombreCompleto" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" type="tel" autocomplete="off" />
+                <span asp-validation-for="Telefono" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Direccion"></label>
+                <textarea asp-for="Direccion" rows="3"></textarea>
+                <span asp-validation-for="Direccion" class="validacion"></span>
+            </div>
+
+            <h2 class="form-subtitulo form-subtitulo--sep">Cuenta de acceso</h2>
+
+            <div class="campos-dos">
+                <div class="campo">
+                    <label asp-for="NombreUsuario"></label>
+                    <input asp-for="NombreUsuario" autocomplete="off" />
+                    <span asp-validation-for="NombreUsuario" class="validacion"></span>
+                </div>
+
+                <div class="campo">
+                    <label asp-for="Correo"></label>
+                    <input asp-for="Correo" type="email" autocomplete="off" />
+                    <span asp-validation-for="Correo" class="validacion"></span>
+                </div>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
