@@ -1,0 +1,68 @@
+﻿@model AOTech.Web.Controllers.ReprogramarCitaViewModel
+
+@{
+    ViewData["Title"] = "Reprogramar cita";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Reprogramar cita</h1>
+            <p>Selecciona una nueva fecha y hora para la cita. Se validará la disponibilidad del taller.</p>
+        </div>
+
+        <a asp-action="Index" class="btn btn--fantasma">
+            Volver a citas
+        </a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="tabla-wrap">
+        <form asp-action="Reprogramar" method="post" class="formulario">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="CitaId" />
+
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error"></div>
+
+            <div class="campo">
+                <label asp-for="FechaSolicitada">Nueva fecha</label>
+                <input asp-for="FechaSolicitada"
+                       type="date"
+                       class="form-control"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="FechaSolicitada" class="text-danger"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="HoraSolicitada">Nueva hora</label>
+                <input asp-for="HoraSolicitada"
+                       type="time"
+                       class="form-control"
+                       step="1800" />
+                <span asp-validation-for="HoraSolicitada" class="text-danger"></span>
+                <small>Selecciona una hora dentro del horario de atención del taller.</small>
+            </div>
+
+            <div class="celda-acciones">
+                <button type="submit" class="btn btn--primario">
+                    Guardar cambios
+                </button>
+
+                <a asp-action="Index" class="btn btn--fantasma">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

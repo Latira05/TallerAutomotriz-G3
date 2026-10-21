@@ -1,6 +1,13 @@
 ﻿@{
     var controlador = ViewContext.RouteData.Values["controller"]?.ToString();
-    var puedeVerClientes = User?.IsInRole("Administrador") == true || User?.IsInRole("Recepcionista") == true;
+
+    var puedeVerClientes =
+        User?.IsInRole("Administrador") == true ||
+        User?.IsInRole("Recepcionista") == true;
+
+    var puedeVerCitas =
+        User?.IsInRole("Administrador") == true ||
+        User?.IsInRole("Recepcionista") == true;
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -8,37 +15,92 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] — A.O Tech</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
 </head>
 <body>
 
     <header class="topbar">
         <div class="topbar__inner">
-            <a asp-controller="Home" asp-action="Index" class="marca">A<span>.</span>O TECH</a>
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="marca">A<span>.</span>O TECH</a>
+
             <nav>
                 <ul class="nav-principal">
-                    <li><a asp-controller="Home" asp-action="Index" class="@(controlador == "Home" ? "activo" : "")">Panel</a></li>
+
+                    <li>
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="@(controlador == "Home" ? "activo" : "")">
+                            Panel
+                        </a>
+                    </li>
+
                     @if (User?.IsInRole("Administrador") == true)
                     {
-                        <li><a asp-controller="Usuarios" asp-action="Index" class="@(controlador == "Usuarios" ? "activo" : "")">Usuarios</a></li>
+                        <li>
+                            <a asp-controller="Usuarios"
+                               asp-action="Index"
+                               class="@(controlador == "Usuarios" ? "activo" : "")">
+                                Usuarios
+                            </a>
+                        </li>
                     }
+
                     @if (puedeVerClientes)
                     {
-                        <li><a asp-controller="Clientes" asp-action="Index" class="@(controlador == "Clientes" ? "activo" : "")">Clientes</a></li>
+                        <li>
+                            <a asp-controller="Clientes"
+                               asp-action="Index"
+                               class="@(controlador == "Clientes" ? "activo" : "")">
+                                Clientes
+                            </a>
+                        </li>
+                    }
+
+                    @if (puedeVerCitas)
+                    {
+                        <li>
+                            <a asp-controller="Citas"
+                               asp-action="Index"
+                               class="@(controlador == "Citas" ? "activo" : "")">
+                                Citas
+                            </a>
+                        </li>
                     }
 
                     @if (User?.Identity?.IsAuthenticated == true)
                     {
-                        <li><span>@User.Identity.Name</span></li>
-                        <li><a asp-controller="Account" asp-action="Logout">Cerrar sesión</a></li>
+                        <li>
+                            <span>@User.Identity.Name</span>
+                        </li>
+
+                        <li>
+                            <a asp-controller="Account"
+                               asp-action="Logout">
+                                Cerrar sesión
+                            </a>
+                        </li>
                     }
                     else
                     {
-                        <li><a asp-controller="Account" asp-action="Login">Iniciar sesión</a></li>
+                        <li>
+                            <a asp-controller="Account"
+                               asp-action="Login">
+                                Iniciar sesión
+                            </a>
+                        </li>
                     }
+
                 </ul>
             </nav>
         </div>
@@ -55,8 +117,10 @@
         </div>
     </footer>
 
-    @* jQuery: lo necesitan los scripts de validación en el navegador (_ValidationScriptsPartial) *@
+    @* jQuery: necesario para los scripts de validación del navegador. *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

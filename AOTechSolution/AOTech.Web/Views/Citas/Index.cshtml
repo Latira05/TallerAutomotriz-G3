@@ -1,0 +1,116 @@
+﻿
+@model List<AOTech.Data.Modelos.Cita>
+
+@{
+    ViewData["Title"] = "Citas";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Gestión de citas</h1>
+            <p>Consulta las solicitudes y organiza las citas del taller.</p>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="tabla-wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="tabla-vacia">
+                <strong>Todavía no hay citas registradas</strong>
+                <text>Las solicitudes de cita aparecerán aquí.</text>
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Servicio</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cita in Model)
+                    {
+                        <tr>
+                            <td class="celda-mono">@cita.CitaId</td>
+                            <td>@cita.ClienteId</td>
+                            <td>@cita.VehiculoId</td>
+                            <td>@(cita.ServicioId?.ToString() ?? "—")</td>
+                            <td class="celda-mono">
+                                @cita.FechaSolicitada.ToString("dd/MM/yyyy")
+                            </td>
+                            <td class="celda-mono">
+                                @cita.HoraSolicitada.ToString("HH:mm")
+                            </td>
+                            <td>
+                                @if (cita.Estado == "Aprobada")
+                                {
+                                    <span class="pastilla pastilla--activo">Aprobada</span>
+                                }
+                                else if (cita.Estado == "Cancelada")
+                                {
+                                    <span class="pastilla pastilla--inactivo">Cancelada</span>
+                                }
+                                else if (cita.Estado == "Pendiente")
+                                {
+                                    <span class="pastilla">Pendiente</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla">@cita.Estado</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="celda-acciones">
+                                    @if (cita.Estado == "Pendiente")
+                                    {
+                                        <form asp-action="Aprobar" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id"
+                                                   value="@cita.CitaId" />
+
+                                            <button type="submit"
+                                                    class="btn btn--primario btn--pequeno"
+                                                    onclick="return confirm('¿Aprobar esta cita?');">
+                                                Aprobar
+                                            </button>
+                                        </form>
+                                    }
+
+                                    @if (cita.Estado == "Pendiente" ||
+                                         cita.Estado == "Aprobada" ||
+                                         cita.Estado == "Reprogramada")
+                                    {
+                                        <a asp-action="Reprogramar"
+                                           asp-route-id="@cita.CitaId"
+                                           class="btn btn--fantasma btn--pequeno">
+                                            Reprogramar
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>
