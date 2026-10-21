@@ -35,3 +35,4 @@ public partial class Cita
 
     public virtual Vehiculo Vehiculo { get; set; } = null!;
 }
+
