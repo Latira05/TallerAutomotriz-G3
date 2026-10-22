@@ -1,0 +1,76 @@
+@model AOTech.Web.Models.VehiculoDetalleViewModel
+
+@{
+    ViewData["Title"] = "Detalle del vehículo";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Detalle del vehículo</h1>
+            <p>Información del vehículo y su cliente propietario.</p>
+        </div>
+        <a asp-action="Editar" asp-route-id="@Model.VehiculoId" class="btn btn--primario">Editar</a>
+    </div>
+
+    <div class="form-card form-card--ancho">
+        <div class="campos-dos">
+            <div class="campo">
+                <label>Placa</label>
+                <p class="celda-mono">@Model.Placa</p>
+            </div>
+            <div class="campo">
+                <label>Estado</label>
+                <p>
+                    @if (Model.EstaActivo)
+                    {
+                        <span class="pastilla pastilla--activo">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="pastilla pastilla--inactivo">Inactivo</span>
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="campos-dos">
+            <div class="campo">
+                <label>Marca</label>
+                <p>@Model.Marca</p>
+            </div>
+            <div class="campo">
+                <label>Modelo</label>
+                <p>@Model.Modelo</p>
+            </div>
+        </div>
+
+        <div class="campos-dos">
+            <div class="campo">
+                <label>Año</label>
+                <p>@(Model.Anio?.ToString() ?? "—")</p>
+            </div>
+            <div class="campo">
+                <label>Kilometraje</label>
+                <p class="celda-mono">@Model.Kilometraje.ToString("N0") km</p>
+            </div>
+        </div>
+
+        <h2 class="form-subtitulo form-subtitulo--sep">Cliente propietario</h2>
+
+        <div class="campos-dos">
+            <div class="campo">
+                <label>Nombre completo</label>
+                <p>@Model.NombreCliente</p>
+            </div>
+            <div class="campo">
+                <label>Código de cliente</label>
+                <p class="celda-mono">@Model.CodigoClienteFrecuente</p>
+            </div>
+        </div>
+
+        <div class="form-acciones">
+            <a asp-action="Index" class="btn btn--fantasma">Volver al listado</a>
+        </div>
+    </div>
+</section>
