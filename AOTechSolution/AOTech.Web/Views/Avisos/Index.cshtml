@@ -1,0 +1,97 @@
+@model AOTech.Web.Models.AvisoListadoViewModel
+
+@{
+    ViewData["Title"] = "Avisos";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Comunicaciones y avisos</h1>
+            <p>Administra borradores y notificaciones internas para los clientes.</p>
+        </div>
+        <a asp-action="Crear" class="btn btn--primario">Nuevo aviso</a>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <form method="get" asp-action="Index" class="barra-busqueda">
+        <input type="search" name="buscar" value="@Model.Buscar" placeholder="Buscar por título" />
+        <select name="estado">
+            <option value="">Todos los estados</option>
+            <option value="Borrador" selected="@(Model.Estado == "Borrador" ? "selected" : null)">Borrador</option>
+            <option value="Enviado" selected="@(Model.Estado == "Enviado" ? "selected" : null)">Enviado</option>
+        </select>
+        <button type="submit" class="btn btn--fantasma">Buscar</button>
+        @if (!string.IsNullOrWhiteSpace(Model.Buscar) || !string.IsNullOrWhiteSpace(Model.Estado))
+        {
+            <a asp-action="Index" class="btn btn--fantasma">Limpiar</a>
+        }
+        <a asp-action="Historial" class="btn btn--fantasma">Historial</a>
+    </form>
+
+    <div class="tabla-wrap">
+        @if (Model.Avisos.Count == 0)
+        {
+            <div class="tabla-vacia">
+                <strong>No hay avisos para mostrar</strong>
+                <text>Crea un aviso para comenzar.</text>
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Creado</th>
+                        <th>Destinatarios</th>
+                        <th>Lecturas</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var aviso in Model.Avisos)
+                    {
+                        <tr>
+                            <td>@aviso.Titulo</td>
+                            <td class="celda-mono">@aviso.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@aviso.CantidadDestinatarios</td>
+                            <td>@aviso.CantidadLeidos / @aviso.CantidadDestinatarios</td>
+                            <td>
+                                @if (aviso.Estado == "Enviado")
+                                {
+                                    <span class="pastilla pastilla--activo">Enviado</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla pastilla--proceso">Borrador</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="celda-acciones">
+                                    <a asp-action="Detalles" asp-route-id="@aviso.AvisoId" class="btn btn--fantasma btn--pequeno">Detalle</a>
+                                    @if (aviso.Estado == "Borrador")
+                                    {
+                                        <a asp-action="Editar" asp-route-id="@aviso.AvisoId" class="btn btn--fantasma btn--pequeno">Editar</a>
+                                        <form asp-action="Enviar" asp-route-id="@aviso.AvisoId" method="post">
+                                            <button type="submit" class="btn btn--primario btn--pequeno">Enviar</button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

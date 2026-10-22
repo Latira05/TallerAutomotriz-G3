@@ -1,0 +1,62 @@
+@model AOTech.Web.Models.AvisoFormularioViewModel
+
+@{
+    ViewData["Title"] = "Editar borrador";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Editar borrador</h1>
+            <p>Solo se pueden modificar avisos que todavía no han sido enviados.</p>
+        </div>
+    </div>
+
+    <div class="form-card form-card--ancho">
+        <form asp-action="Editar" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="AvisoId" />
+            <div asp-validation-summary="All" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="Titulo"></label>
+                <input asp-for="Titulo" autocomplete="off" />
+                <span asp-validation-for="Titulo" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Mensaje"></label>
+                <textarea asp-for="Mensaje" rows="6"></textarea>
+                <span asp-validation-for="Mensaje" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="TodosClientesActivos" class="opcion-destinatario">
+                    <input asp-for="TodosClientesActivos" />
+                    <span>Enviar a todos los clientes activos</span>
+                </label>
+            </div>
+
+            <div class="campo">
+                <label>Seleccionar uno o varios clientes</label>
+                <div class="lista-destinatarios">
+                    @foreach (var cliente in Model.ClientesDisponibles)
+                    {
+                        <label class="opcion-destinatario">
+                            <input type="checkbox" name="ClienteIds" value="@cliente.ClienteId"
+                                   checked="@(Model.ClienteIds.Contains(cliente.ClienteId) ? "checked" : null)" />
+                            <span>@cliente.NombreCompleto — @cliente.CodigoClienteFrecuente</span>
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="ClienteIds" class="validacion"></span>
+                <span asp-validation-for="TodosClientesActivos" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>

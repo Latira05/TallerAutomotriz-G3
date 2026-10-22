@@ -1,0 +1,41 @@
+@model AOTech.Web.Models.AvisoBandejaDetalleViewModel
+
+@{
+    ViewData["Title"] = "Detalle de aviso";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>@Model.Titulo</h1>
+            <p>Notificación interna recibida el @Model.FechaEnvio.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="form-card form-card--ancho">
+        <p>@Model.Mensaje</p>
+        @if (Model.FechaLectura.HasValue)
+        {
+            <p>Leído el @Model.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
+        }
+        else
+        {
+            <form asp-action="MarcarLeido" asp-route-id="@Model.AvisoId" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn--primario">Marcar como leído</button>
+            </form>
+        }
+        <div class="form-acciones">
+            <a asp-action="MisAvisos" class="btn btn--fantasma">Volver a mis avisos</a>
+        </div>
+    </div>
+</section>
