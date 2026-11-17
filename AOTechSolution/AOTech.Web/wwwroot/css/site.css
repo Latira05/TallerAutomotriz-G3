@@ -691,3 +691,186 @@ table.tabla {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================================
+   Módulo Inventario (Repuestos y Movimientos)
+   Pegar al FINAL de wwwroot/css/site.css.
+   Usa también las clases del bloque de Clientes (campos-dos, form-card--ancho,
+   campo textarea, codigo-cliente, barra-busqueda): ese bloque debe estar pegado.
+   ========================================================================== */
+
+/* Menú: si hay muchos enlaces, que pasen a una segunda línea en vez de desbordar */
+.nav-principal {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    gap: 22px;
+}
+
+/* Botones de la cabecera de una sección */
+.acciones-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ---------- Pestañas de filtro (chips) ---------- */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+    .chip:hover {
+        color: var(--text);
+        border-color: var(--text-muted);
+    }
+
+.chip--activo {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--text-muted);
+}
+
+.chip__n {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 1px 8px;
+    color: var(--text-muted);
+}
+
+/* La pestaña de stock bajo resalta con el naranja de la marca cuando hay algo que atender */
+.chip--alerta .chip__n {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+}
+
+.chip--alerta.chip--activo {
+    border-color: var(--accent);
+}
+
+/* ---------- Tabla: columnas numéricas y celdas con subtítulo ---------- */
+.tabla th.num,
+.tabla td.num {
+    text-align: right;
+}
+
+.celda-titulo {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.celda-sub {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    margin-top: 2px;
+    max-width: 46ch;
+}
+
+.celda-sub--inline {
+    margin-left: 8px;
+}
+
+.celda-stock {
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.celda-sub-texto {
+    color: var(--text-muted);
+    max-width: 30ch;
+}
+
+/* ---------- Etiquetas de estado nuevas ---------- */
+.pastilla--neutra {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+}
+
+.pastilla--alerta {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+}
+
+.pastilla--entrada {
+    background: var(--steel-soft);
+    color: #7db8ca;
+}
+
+.pastilla--salida {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+}
+
+/* ---------- Alerta informativa ---------- */
+.alerta--info {
+    background: var(--steel-soft);
+    color: #a9cfdb;
+    border-color: rgba(76, 140, 158, 0.4);
+}
+
+/* ---------- Filtros del historial ---------- */
+.filtros-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    align-items: end;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+    .filtros-form .campo {
+        margin-bottom: 0;
+    }
+
+        .filtros-form .campo input[type="date"] {
+            color-scheme: dark;
+        }
+
+.filtros-form__botones {
+    display: flex;
+    gap: 10px;
+}
+
+/* ---------- Notas ---------- */
+.nota-tabla {
+    margin: 12px 4px 0;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    max-width: none;
+}
+
+.nota-form {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    margin: 4px 0 20px;
+}
+
+/* Resultado de "Validar existencias" */
+.resultado-validacion {
+    max-width: 560px;
+    margin-top: 20px;
+}
+
+    .resultado-validacion .alerta {
+        margin-bottom: 0;
+        line-height: 1.6;
+    }

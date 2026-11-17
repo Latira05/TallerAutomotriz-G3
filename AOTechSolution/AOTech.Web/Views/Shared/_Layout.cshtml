@@ -1,6 +1,8 @@
 ﻿@{
     var controlador = ViewContext.RouteData.Values["controller"]?.ToString();
     var puedeVerClientes = User?.IsInRole("Administrador") == true || User?.IsInRole("Recepcionista") == true;
+    var esAdmin = User?.IsInRole("Administrador") == true;
+    var esMecanico = User?.IsInRole("Mecanico") == true;
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -28,6 +30,14 @@
                     @if (puedeVerClientes)
                     {
                         <li><a asp-controller="Clientes" asp-action="Index" class="@(controlador == "Clientes" ? "activo" : "")">Clientes</a></li>
+                    }
+                    @if (esAdmin)
+                    {
+                        <li><a asp-controller="Repuestos" asp-action="Index" class="@(controlador == "Repuestos" || controlador == "Movimientos" ? "activo" : "")">Inventario</a></li>
+                    }
+                    else if (esMecanico)
+                    {
+                        <li><a asp-controller="Movimientos" asp-action="Salida" class="@(controlador == "Movimientos" ? "activo" : "")">Salida de repuestos</a></li>
                     }
 
                     @if (User?.Identity?.IsAuthenticated == true)

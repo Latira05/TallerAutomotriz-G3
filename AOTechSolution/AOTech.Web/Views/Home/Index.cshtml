@@ -46,7 +46,7 @@
 <section class="modulos" id="modulos">
     <div class="modulos__titulo">
         <h2>Módulos del sistema</h2>
-        <span>7 bahías · 2 activas</span>
+        <span>7 bahías · 3 activas</span>
     </div>
 
     <div class="grilla-modulos">
@@ -78,12 +78,12 @@
             <span class="modulo-card__enlace">Próximamente</span>
         </div>
 
-        <div class="modulo-card modulo-card--pendiente">
+        <a asp-controller="Repuestos" asp-action="Index" class="modulo-card modulo-card--activa">
             <span class="modulo-card__bahia">BAHÍA 05</span>
             <h3>Inventario</h3>
             <p>Repuestos, existencias y movimientos de entrada/salida.</p>
-            <span class="modulo-card__enlace">Próximamente</span>
-        </div>
+            <span class="modulo-card__enlace">Entrar →</span>
+        </a>
 
         <div class="modulo-card modulo-card--pendiente">
             <span class="modulo-card__bahia">BAHÍA 06</span>

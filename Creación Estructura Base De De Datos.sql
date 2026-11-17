@@ -424,3 +424,15 @@ INSERT INTO Seguridad.Roles (NombreRol, Descripcion) VALUES
     (N'Mecanico', N'Ejecución y actualización de órdenes de servicio e inventario'),
     (N'Cliente', N'Acceso a su información, citas, pagos y cursos');
 GO
+
+--Prueba modulo repuestos--
+
+USE AOTechBD;
+DECLARE @ClienteId INT = (SELECT TOP 1 ClienteId FROM Clientes.Clientes);
+DECLARE @UsuarioId INT = (SELECT TOP 1 UsuarioId FROM Seguridad.Usuarios WHERE EstaActivo = 1 ORDER BY UsuarioId);
+
+INSERT INTO Clientes.Vehiculos (ClienteId, Placa, Marca, Modelo, Anio, Kilometraje)
+VALUES (@ClienteId, 'PRUEBA-001', 'Toyota', 'Hilux', 2020, 45000);
+
+INSERT INTO Servicios.OrdenesServicio (VehiculoId, ClienteId, RecepcionistaUsuarioId, Estado, Descripcion)
+VALUES (SCOPE_IDENTITY(), @ClienteId, @UsuarioId, 'Abierta', 'Orden de prueba para inventario');

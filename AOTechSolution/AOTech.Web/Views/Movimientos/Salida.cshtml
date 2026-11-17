@@ -1,0 +1,92 @@
+﻿@model AOTech.Web.Models.MovimientoSalidaViewModel
+
+@{
+    ViewData["Title"] = "Registrar salida";
+    var erroresGenerales = ViewData.ModelState.TryGetValue(string.Empty, out var entrada)
+        ? entrada!.Errors.Select(e => e.ErrorMessage).ToList()
+        : new List<string>();
+    var sinOrdenes = Model.Ordenes.Count == 0;
+    var sinRepuestos = Model.Repuestos.Count == 0;
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Registrar salida</h1>
+            <p>Descuenta del inventario los repuestos que se usaron en una orden de servicio.</p>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="form-card">
+        <form asp-action="Salida" method="post">
+            @if (erroresGenerales.Count > 0)
+            {
+                <div class="alerta alerta--error">@string.Join(" ", erroresGenerales)</div>
+            }
+
+            @if (sinOrdenes)
+            {
+                <div class="alerta alerta--info">No hay órdenes de servicio abiertas o en proceso. Cuando existan aparecerán en la lista.</div>
+            }
+            @if (sinRepuestos)
+            {
+                <div class="alerta alerta--info">No hay repuestos activos para registrar salidas.</div>
+            }
+
+            <div class="campo">
+                <label asp-for="OrdenServicioId"></label>
+                <select asp-for="OrdenServicioId">
+                    <option value="">Selecciona la orden…</option>
+                    @foreach (var orden in Model.Ordenes)
+                    {
+                        <option value="@orden.OrdenServicioId">@orden.Etiqueta</option>
+                    }
+                </select>
+                <span asp-validation-for="OrdenServicioId" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="RepuestoId"></label>
+                <select asp-for="RepuestoId">
+                    <option value="">Selecciona un repuesto…</option>
+                    @foreach (var opcion in Model.Repuestos)
+                    {
+                        <option value="@opcion.RepuestoId">@opcion.Etiqueta</option>
+                    }
+                </select>
+                <span asp-validation-for="RepuestoId" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Cantidad"></label>
+                <input asp-for="Cantidad" type="number" min="1" step="1" />
+                <span asp-validation-for="Cantidad" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Motivo"></label>
+                <input asp-for="Motivo" autocomplete="off" placeholder="Opcional" />
+                <span asp-validation-for="Motivo" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario" disabled="@(sinOrdenes || sinRepuestos)">Registrar salida</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
