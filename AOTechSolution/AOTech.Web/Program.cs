@@ -14,14 +14,14 @@ builder.Services.AddDbContext<AOTechDbContext>(opciones =>
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("AOTechBD")));
 
 var cadena = builder.Configuration.GetConnectionString("AOTechBD")
-    ?? throw new InvalidOperationException("Falta la cadena de conexión 'AOTechBD'. Configúrala con user-secrets (ver README).");
+    ?? throw new InvalidOperationException("Falta la cadena de conexiÃ³n 'AOTechBD'. ConfigÃºrala con user-secrets (ver README).");
 
 // Cliente HTTP para consumir AOTech.API
 builder.Services.AddHttpClient("AOTechApi", cliente =>
 {
     cliente.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!);
 });
-// Autenticación por cookies
+// AutenticaciÃ³n por cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -45,7 +45,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-// Añadido middleware de autenticación
+// AÃ±adido middleware de autenticaciÃ³n
 app.UseAuthentication();
 app.UseAuthorization();
 

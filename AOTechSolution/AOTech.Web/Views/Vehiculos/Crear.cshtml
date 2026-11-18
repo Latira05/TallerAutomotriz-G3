@@ -1,14 +1,14 @@
 @model AOTech.Web.Models.VehiculoCrearViewModel
 
 @{
-    ViewData["Title"] = "Nuevo vehículo";
+    ViewData["Title"] = "Nuevo vehÃ­culo";
 }
 
 <section class="seccion">
     <div class="seccion__cabecera">
         <div>
-            <h1>Nuevo vehículo</h1>
-            <p>Registra un vehículo y asócialo con un cliente.</p>
+            <h1>Nuevo vehÃ­culo</h1>
+            <p>Registra un vehÃ­culo y asÃ³cialo con un cliente.</p>
         </div>
     </div>
 
@@ -20,10 +20,10 @@
             <div class="campo">
                 <label asp-for="ClienteId"></label>
                 <select asp-for="ClienteId">
-                    <option value="">Selecciona un cliente…</option>
+                    <option value="">Selecciona un clienteâ€¦</option>
                     @foreach (var cliente in Model.ClientesDisponibles)
                     {
-                        <option value="@cliente.ClienteId">@cliente.NombreCompleto — @cliente.CodigoClienteFrecuente</option>
+                        <option value="@cliente.ClienteId">@cliente.NombreCompleto â€” @cliente.CodigoClienteFrecuente</option>
                     }
                 </select>
                 <span asp-validation-for="ClienteId" class="validacion"></span>
@@ -64,7 +64,7 @@
             </div>
 
             <div class="form-acciones">
-                <button type="submit" class="btn btn--primario">Registrar vehículo</button>
+                <button type="submit" class="btn btn--primario">Registrar vehÃ­culo</button>
                 <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
             </div>
         </form>

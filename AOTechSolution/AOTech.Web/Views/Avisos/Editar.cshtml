@@ -8,7 +8,7 @@
     <div class="seccion__cabecera">
         <div>
             <h1>Editar borrador</h1>
-            <p>Solo se pueden modificar avisos que todavía no han sido enviados.</p>
+            <p>Solo se pueden modificar avisos que todavÃ­a no han sido enviados.</p>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
                         <label class="opcion-destinatario">
                             <input type="checkbox" name="ClienteIds" value="@cliente.ClienteId"
                                    checked="@(Model.ClienteIds.Contains(cliente.ClienteId) ? "checked" : null)" />
-                            <span>@cliente.NombreCompleto — @cliente.CodigoClienteFrecuente</span>
+                            <span>@cliente.NombreCompleto â€” @cliente.CodigoClienteFrecuente</span>
                         </label>
                     }
                 </div>

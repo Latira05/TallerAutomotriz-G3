@@ -1,14 +1,14 @@
 @model AOTech.Web.Models.VehiculoEditarViewModel
 
 @{
-    ViewData["Title"] = "Editar vehículo";
+    ViewData["Title"] = "Editar vehÃ­culo";
 }
 
 <section class="seccion">
     <div class="seccion__cabecera">
         <div>
-            <h1>Editar vehículo</h1>
-            <p>Actualiza la información del vehículo y su cliente propietario.</p>
+            <h1>Editar vehÃ­culo</h1>
+            <p>Actualiza la informaciÃ³n del vehÃ­culo y su cliente propietario.</p>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
                 <select asp-for="ClienteId">
                     @foreach (var cliente in Model.ClientesDisponibles)
                     {
-                        <option value="@cliente.ClienteId">@cliente.NombreCompleto — @cliente.CodigoClienteFrecuente</option>
+                        <option value="@cliente.ClienteId">@cliente.NombreCompleto â€” @cliente.CodigoClienteFrecuente</option>
                     }
                 </select>
                 <span asp-validation-for="ClienteId" class="validacion"></span>

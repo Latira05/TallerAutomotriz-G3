@@ -45,13 +45,13 @@
         <p>@Model.Mensaje</p>
         <dl class="ficha__cuerpo">
             <div class="ficha__fila"><dt>Creado por</dt><dd>@Model.NombreCreador</dd></div>
-            <div class="ficha__fila"><dt>Fecha de creación</dt><dd>@Model.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
+            <div class="ficha__fila"><dt>Fecha de creaciÃ³n</dt><dd>@Model.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
             @if (Model.FechaEnvio.HasValue)
             {
-                <div class="ficha__fila"><dt>Fecha de envío</dt><dd>@Model.FechaEnvio.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
+                <div class="ficha__fila"><dt>Fecha de envÃ­o</dt><dd>@Model.FechaEnvio.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
             }
             <div class="ficha__fila"><dt>Destinatarios</dt><dd>@Model.CantidadDestinatarios</dd></div>
-            <div class="ficha__fila"><dt>Leídos</dt><dd>@Model.CantidadLeidos / @Model.CantidadDestinatarios</dd></div>
+            <div class="ficha__fila"><dt>LeÃ­dos</dt><dd>@Model.CantidadLeidos / @Model.CantidadDestinatarios</dd></div>
         </dl>
 
         <h2 class="form-subtitulo form-subtitulo--sep">Destinatarios y lectura</h2>
@@ -64,7 +64,7 @@
             {
                 <table class="tabla">
                     <thead>
-                        <tr><th>Cliente</th><th>Código</th><th>Lectura</th></tr>
+                        <tr><th>Cliente</th><th>CÃ³digo</th><th>Lectura</th></tr>
                     </thead>
                     <tbody>
                         @foreach (var destinatario in Model.Destinatarios)
@@ -75,7 +75,7 @@
                                 <td>
                                     @if (destinatario.FechaLectura.HasValue)
                                     {
-                                        <span>Leído @destinatario.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
+                                        <span>LeÃ­do @destinatario.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
                                     }
                                     else
                                     {

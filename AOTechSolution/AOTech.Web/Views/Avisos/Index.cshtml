@@ -23,7 +23,7 @@
     }
 
     <form method="get" asp-action="Index" class="barra-busqueda">
-        <input type="search" name="buscar" value="@Model.Buscar" placeholder="Buscar por título" />
+        <input type="search" name="buscar" value="@Model.Buscar" placeholder="Buscar por tÃ­tulo" />
         <select name="estado">
             <option value="">Todos los estados</option>
             <option value="Borrador" selected="@(Model.Estado == "Borrador" ? "selected" : null)">Borrador</option>
@@ -50,7 +50,7 @@
             <table class="tabla">
                 <thead>
                     <tr>
-                        <th>Título</th>
+                        <th>TÃ­tulo</th>
                         <th>Creado</th>
                         <th>Destinatarios</th>
                         <th>Lecturas</th>

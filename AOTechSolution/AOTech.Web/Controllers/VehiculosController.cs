@@ -78,7 +78,7 @@ namespace AOTech.Web.Controllers
                 {
                     foreach (var error in item.Value.Errors)
                     {
-                        Console.WriteLine($"Validación de vehículo ({item.Key}): {error.ErrorMessage}");
+                        Console.WriteLine($"ValidaciÃ³n de vehÃ­culo ({item.Key}): {error.ErrorMessage}");
                     }
                 }
 
@@ -97,7 +97,7 @@ namespace AOTech.Web.Controllers
 
             if (await _contexto.Vehiculos.AnyAsync(v => v.Placa == placa))
             {
-                ModelState.AddModelError(nameof(datos.Placa), "Ya existe un vehículo con esa placa.");
+                ModelState.AddModelError(nameof(datos.Placa), "Ya existe un vehÃ­culo con esa placa.");
                 datos.ClientesDisponibles = await ObtenerClientesAsync();
                 return View(datos);
             }
@@ -121,13 +121,13 @@ namespace AOTech.Web.Controllers
             }
             catch (DbUpdateException ex)
             {
-                Console.WriteLine($"No se pudo registrar el vehículo: {ex.InnerException?.Message ?? ex.Message}");
-                ModelState.AddModelError(string.Empty, "No se pudo registrar el vehículo. Intenta de nuevo.");
+                Console.WriteLine($"No se pudo registrar el vehÃ­culo: {ex.InnerException?.Message ?? ex.Message}");
+                ModelState.AddModelError(string.Empty, "No se pudo registrar el vehÃ­culo. Intenta de nuevo.");
                 datos.ClientesDisponibles = await ObtenerClientesAsync();
                 return View(datos);
             }
 
-            TempData["Exito"] = "Vehículo registrado correctamente.";
+            TempData["Exito"] = "VehÃ­culo registrado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -137,7 +137,7 @@ namespace AOTech.Web.Controllers
 
             if (vehiculo == null)
             {
-                TempData["Error"] = "El vehículo no existe.";
+                TempData["Error"] = "El vehÃ­culo no existe.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -171,7 +171,7 @@ namespace AOTech.Web.Controllers
 
             if (vehiculo == null)
             {
-                TempData["Error"] = "El vehículo no existe.";
+                TempData["Error"] = "El vehÃ­culo no existe.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -184,7 +184,7 @@ namespace AOTech.Web.Controllers
 
             if (await _contexto.Vehiculos.AnyAsync(v => v.Placa == datos.Placa && v.VehiculoId != datos.VehiculoId))
             {
-                ModelState.AddModelError(nameof(datos.Placa), "Ya existe otro vehículo con esa placa.");
+                ModelState.AddModelError(nameof(datos.Placa), "Ya existe otro vehÃ­culo con esa placa.");
                 datos.ClientesDisponibles = await ObtenerClientesAsync();
                 return View(datos);
             }
@@ -202,12 +202,12 @@ namespace AOTech.Web.Controllers
             }
             catch (DbUpdateException)
             {
-                ModelState.AddModelError(string.Empty, "No se pudo actualizar el vehículo. Intenta de nuevo.");
+                ModelState.AddModelError(string.Empty, "No se pudo actualizar el vehÃ­culo. Intenta de nuevo.");
                 datos.ClientesDisponibles = await ObtenerClientesAsync();
                 return View(datos);
             }
 
-            TempData["Exito"] = "Vehículo actualizado correctamente.";
+            TempData["Exito"] = "VehÃ­culo actualizado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -220,7 +220,7 @@ namespace AOTech.Web.Controllers
 
             if (vehiculo == null)
             {
-                TempData["Error"] = "El vehículo no existe.";
+                TempData["Error"] = "El vehÃ­culo no existe.";
                 return RedirectToAction(nameof(Index));
             }
 

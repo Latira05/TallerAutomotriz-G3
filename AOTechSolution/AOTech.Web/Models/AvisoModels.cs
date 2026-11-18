@@ -6,9 +6,9 @@ public class AvisoFormularioViewModel
 {
     public int AvisoId { get; set; }
 
-    [Required(ErrorMessage = "Escribe un título.")]
-    [StringLength(150, ErrorMessage = "El título no puede exceder 150 caracteres.")]
-    [Display(Name = "Título")]
+    [Required(ErrorMessage = "Escribe un tÃ­tulo.")]
+    [StringLength(150, ErrorMessage = "El tÃ­tulo no puede exceder 150 caracteres.")]
+    [Display(Name = "TÃ­tulo")]
     public string Titulo { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Escribe el mensaje.")]

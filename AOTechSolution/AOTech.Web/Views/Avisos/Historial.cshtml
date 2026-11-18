@@ -8,7 +8,7 @@
     <div class="seccion__cabecera">
         <div>
             <h1>Historial de avisos enviados</h1>
-            <p>Consulta el envío interno y el estado de lectura de cada destinatario.</p>
+            <p>Consulta el envÃ­o interno y el estado de lectura de cada destinatario.</p>
         </div>
         <a asp-action="Index" class="btn btn--fantasma">Volver a avisos</a>
     </div>
@@ -23,7 +23,7 @@
             @foreach (var cliente in Model.DestinatariosDisponibles)
             {
                 <option value="@cliente.UsuarioId" selected="@(Model.UsuarioDestinatarioId == cliente.UsuarioId ? "selected" : null)">
-                    @cliente.NombreCompleto — @cliente.CodigoClienteFrecuente
+                    @cliente.NombreCompleto â€” @cliente.CodigoClienteFrecuente
                 </option>
             }
         </select>
@@ -41,10 +41,10 @@
             <table class="tabla">
                 <thead>
                     <tr>
-                        <th>Título</th>
+                        <th>TÃ­tulo</th>
                         <th>Enviado</th>
                         <th>Destinatarios</th>
-                        <th>Leídos</th>
+                        <th>LeÃ­dos</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>

@@ -1,6 +1,6 @@
 /* ==========================================================================
-   A.O TECH — Sistema de diseño del panel interno
-   Paleta: carbón cálido + naranja "llave de torque" + acero
+   A.O TECH â€” Sistema de diseÃ±o del panel interno
+   Paleta: carbÃ³n cÃ¡lido + naranja "llave de torque" + acero
    ========================================================================== */
 
 :root {
@@ -170,7 +170,7 @@ p {
     gap: 14px;
 }
 
-/* Ficha de orden — elemento visual del hero, no decorativo: refleja el
+/* Ficha de orden â€” elemento visual del hero, no decorativo: refleja el
    dominio real (una orden de servicio del taller). */
 .ficha {
     background: var(--surface);
@@ -303,7 +303,7 @@ p {
     font-size: 0.82rem;
 }
 
-/* ---------- Grilla de módulos (bahías) ---------- */
+/* ---------- Grilla de mÃ³dulos (bahÃ­as) ---------- */
 .modulos {
     padding: 8px 0 80px;
 }
@@ -387,7 +387,7 @@ p {
     font-weight: 500;
 }
 
-/* ---------- Encabezado de sección interna (páginas de módulo) ---------- */
+/* ---------- Encabezado de secciÃ³n interna (pÃ¡ginas de mÃ³dulo) ---------- */
 .seccion {
     padding: 40px 0 72px;
 }
@@ -605,7 +605,7 @@ table.tabla {
 
 
 /* ==========================================================================
-   Módulo Clientes 
+   MÃ³dulo Clientes 
    ========================================================================== */
 
 .barra-busqueda {
@@ -693,20 +693,20 @@ table.tabla {
 }
 
 /* ==========================================================================
-   Módulo Inventario (Repuestos y Movimientos)
+   MÃ³dulo Inventario (Repuestos y Movimientos)
    Pegar al FINAL de wwwroot/css/site.css.
-   Usa también las clases del bloque de Clientes (campos-dos, form-card--ancho,
+   Usa tambiÃ©n las clases del bloque de Clientes (campos-dos, form-card--ancho,
    campo textarea, codigo-cliente, barra-busqueda): ese bloque debe estar pegado.
    ========================================================================== */
 
-/* Menú: si hay muchos enlaces, que pasen a una segunda línea en vez de desbordar */
+/* MenÃº: si hay muchos enlaces, que pasen a una segunda lÃ­nea en vez de desbordar */
 .nav-principal {
     flex-wrap: wrap;
     row-gap: 6px;
     gap: 22px;
 }
 
-/* Botones de la cabecera de una sección */
+/* Botones de la cabecera de una secciÃ³n */
 .acciones-cabecera {
     display: flex;
     flex-wrap: wrap;
@@ -714,7 +714,7 @@ table.tabla {
     justify-content: flex-end;
 }
 
-/* ---------- Pestañas de filtro (chips) ---------- */
+/* ---------- PestaÃ±as de filtro (chips) ---------- */
 .chips {
     display: flex;
     flex-wrap: wrap;
@@ -754,7 +754,7 @@ table.tabla {
     color: var(--text-muted);
 }
 
-/* La pestaña de stock bajo resalta con el naranja de la marca cuando hay algo que atender */
+/* La pestaÃ±a de stock bajo resalta con el naranja de la marca cuando hay algo que atender */
 .chip--alerta .chip__n {
     background: var(--accent-soft);
     color: var(--accent-strong);
@@ -764,7 +764,7 @@ table.tabla {
     border-color: var(--accent);
 }
 
-/* ---------- Tabla: columnas numéricas y celdas con subtítulo ---------- */
+/* ---------- Tabla: columnas numÃ©ricas y celdas con subtÃ­tulo ---------- */
 .tabla th.num,
 .tabla td.num {
     text-align: right;

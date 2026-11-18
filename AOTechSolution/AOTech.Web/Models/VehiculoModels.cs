@@ -19,7 +19,7 @@ public class VehiculoListaViewModel
 public class VehiculoCrearViewModel
 {
     [Required(ErrorMessage = "Selecciona un cliente.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Selecciona un cliente válido.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Selecciona un cliente vÃ¡lido.")]
     [Display(Name = "Cliente")]
     public int ClienteId { get; set; }
 
@@ -38,8 +38,8 @@ public class VehiculoCrearViewModel
     [Display(Name = "Modelo")]
     public string Modelo { get; set; } = string.Empty;
 
-    [Range(1900, 2100, ErrorMessage = "Escribe un año válido.")]
-    [Display(Name = "Año")]
+    [Range(1900, 2100, ErrorMessage = "Escribe un aÃ±o vÃ¡lido.")]
+    [Display(Name = "AÃ±o")]
     public short? Anio { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "El kilometraje no puede ser negativo.")]
@@ -54,7 +54,7 @@ public class VehiculoEditarViewModel
     public int VehiculoId { get; set; }
 
     [Required(ErrorMessage = "Selecciona un cliente.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Selecciona un cliente válido.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Selecciona un cliente vÃ¡lido.")]
     [Display(Name = "Cliente")]
     public int ClienteId { get; set; }
 
@@ -73,8 +73,8 @@ public class VehiculoEditarViewModel
     [Display(Name = "Modelo")]
     public string Modelo { get; set; } = string.Empty;
 
-    [Range(1900, 2100, ErrorMessage = "Escribe un año válido.")]
-    [Display(Name = "Año")]
+    [Range(1900, 2100, ErrorMessage = "Escribe un aÃ±o vÃ¡lido.")]
+    [Display(Name = "AÃ±o")]
     public short? Anio { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "El kilometraje no puede ser negativo.")]
