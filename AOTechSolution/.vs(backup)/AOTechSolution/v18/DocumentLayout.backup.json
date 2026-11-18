@@ -1,0 +1,396 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\controllers\\avisoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\controllers\\avisoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.data\\contexto\\aotechdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|solutionrelative:aotech.data\\contexto\\aotechdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.data\\modelos\\avisodestinatario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|solutionrelative:aotech.data\\modelos\\avisodestinatario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.data\\modelos\\aviso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|solutionrelative:aotech.data\\modelos\\aviso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\citas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\citas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\citas\\reprogramar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\citas\\reprogramar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\citas\\historial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\citas\\historial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\controllers\\citascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\controllers\\citascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\models\\reprogramarcitaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\models\\reprogramarcitaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\models\\historialcitasviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\models\\historialcitasviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\usuarios\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\usuarios\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\models\\avisomodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\models\\avisomodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.api\\controllers\\citascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|solutionrelative:aotech.api\\controllers\\citascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.api\\controllers\\citasrecepcioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|solutionrelative:aotech.api\\controllers\\citasrecepcioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.api\\dtos\\citadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4375BEF-B4C4-4BDA-B073-ED1693A4B63A}|AOTech.API\\AOTech.API.csproj|solutionrelative:aotech.api\\dtos\\citadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.web\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A492E884-6BD0-4161-866E-BAB9A6D543AE}|AOTech.Web\\AOTech.Web.csproj|solutionrelative:aotech.web\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.data\\modelos\\cita.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|solutionrelative:aotech.data\\modelos\\cita.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|c:\\users\\nathanael\\source\\repos\\tallerautomotriz-g3\\aotechsolution\\aotech.data\\modelos\\ordenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{109EBF4D-597F-41C7-8EC5-A024DA0E989E}|AOTech.Data\\AOTech.Data.csproj|solutionrelative:aotech.data\\modelos\\ordenesservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{75c83ab3-5264-45e8-ad32-5c8a41ad477d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AvisoDestinatario.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\AvisoDestinatario.cs",
+              "RelativeDocumentMoniker": "AOTech.Data\\Modelos\\AvisoDestinatario.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\AvisoDestinatario.cs",
+              "RelativeToolTip": "AOTech.Data\\Modelos\\AvisoDestinatario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T08:03:08.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Aviso.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\Aviso.cs",
+              "RelativeDocumentMoniker": "AOTech.Data\\Modelos\\Aviso.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\Aviso.cs",
+              "RelativeToolTip": "AOTech.Data\\Modelos\\Aviso.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T08:02:52.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AOTechDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Contexto\\AOTechDbContext.cs",
+              "RelativeDocumentMoniker": "AOTech.Data\\Contexto\\AOTechDbContext.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Contexto\\AOTechDbContext.cs",
+              "RelativeToolTip": "AOTech.Data\\Contexto\\AOTechDbContext.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBQAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T07:52:42.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AvisosController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\AvisosController.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Controllers\\AvisosController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\AvisosController.cs*",
+              "RelativeToolTip": "AOTech.Web\\Controllers\\AvisosController.cs*",
+              "ViewState": "AgIAAEEAAAAAAAAAAIAwwJUAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T07:42:30.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CitasController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\CitasController.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Controllers\\CitasController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\CitasController.cs",
+              "RelativeToolTip": "AOTech.Web\\Controllers\\CitasController.cs",
+              "ViewState": "AgIAAFUBAAAAAAAAAAAAwGYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:40:29.587Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Reprogramar.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Reprogramar.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Citas\\Reprogramar.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Reprogramar.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Citas\\Reprogramar.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T06:21:52.79Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CitasController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Controllers\\CitasController.cs",
+              "RelativeDocumentMoniker": "AOTech.API\\Controllers\\CitasController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Controllers\\CitasController.cs",
+              "RelativeToolTip": "AOTech.API\\Controllers\\CitasController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:55:30.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Home\\Privacy.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T05:48:27.873Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T05:45:37.963Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Index.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Citas\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Index.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Citas\\Index.cshtml",
+              "ViewState": "AgIAAJoAAAAAAAAAAAAuwLAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T05:45:24.781Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Historial.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Historial.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Citas\\Historial.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Citas\\Historial.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Citas\\Historial.cshtml",
+              "ViewState": "AgIAAMAAAAAAAAAAAAAewNkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T06:59:15.304Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ReprogramarCitaViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\ReprogramarCitaViewModel.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Models\\ReprogramarCitaViewModel.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\ReprogramarCitaViewModel.cs",
+              "RelativeToolTip": "AOTech.Web\\Models\\ReprogramarCitaViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T07:39:49.648Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Controllers\\UsuariosController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "AOTech.Web\\Controllers\\UsuariosController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwAgAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T06:30:32.224Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "HistorialCitasViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\HistorialCitasViewModel.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Models\\HistorialCitasViewModel.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\HistorialCitasViewModel.cs",
+              "RelativeToolTip": "AOTech.Web\\Models\\HistorialCitasViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T06:53:53.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Usuarios\\Index.cshtml",
+              "RelativeDocumentMoniker": "AOTech.Web\\Views\\Usuarios\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Views\\Usuarios\\Index.cshtml",
+              "RelativeToolTip": "AOTech.Web\\Views\\Usuarios\\Index.cshtml",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAEgAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-18T07:21:10.186Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AvisoModels.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\AvisoModels.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Models\\AvisoModels.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Models\\AvisoModels.cs",
+              "RelativeToolTip": "AOTech.Web\\Models\\AvisoModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T06:53:30.513Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "AOTech.Web\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Web\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "AOTech.Web\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:51:43.775Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Cita.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\Cita.cs",
+              "RelativeDocumentMoniker": "AOTech.Data\\Modelos\\Cita.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\Cita.cs",
+              "RelativeToolTip": "AOTech.Data\\Modelos\\Cita.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:43:23.191Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "OrdenesServicio.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\OrdenesServicio.cs",
+              "RelativeDocumentMoniker": "AOTech.Data\\Modelos\\OrdenesServicio.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.Data\\Modelos\\OrdenesServicio.cs",
+              "RelativeToolTip": "AOTech.Data\\Modelos\\OrdenesServicio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:41:29.878Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CitaDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Dtos\\CitaDTO.cs",
+              "RelativeDocumentMoniker": "AOTech.API\\Dtos\\CitaDTO.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Dtos\\CitaDTO.cs",
+              "RelativeToolTip": "AOTech.API\\Dtos\\CitaDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:40:28.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CitasRecepcionController.cs",
+              "DocumentMoniker": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Controllers\\CitasRecepcionController.cs",
+              "RelativeDocumentMoniker": "AOTech.API\\Controllers\\CitasRecepcionController.cs",
+              "ToolTip": "C:\\Users\\Nathanael\\source\\repos\\TallerAutomotriz-G3\\AOTechSolution\\AOTech.API\\Controllers\\CitasRecepcionController.cs",
+              "RelativeToolTip": "AOTech.API\\Controllers\\CitasRecepcionController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T05:40:26.637Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

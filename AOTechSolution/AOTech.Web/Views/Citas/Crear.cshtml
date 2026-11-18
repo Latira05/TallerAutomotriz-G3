@@ -1,0 +1,102 @@
+﻿@model AOTech.Web.Models.CrearCitaViewModel
+
+@{
+    ViewData["Title"] = "Agendar cita";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Agendar una cita</h1>
+            <p>Completa los datos para solicitar una cita en el taller.</p>
+        </div>
+
+        <a asp-action="Index" class="btn btn--secundario">
+            Volver a citas
+        </a>
+    </div>
+
+    <form asp-action="Crear" method="post" class="formulario">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger">
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="ClienteId">Cliente</label>
+            <select asp-for="ClienteId"
+                    asp-items="Model.Clientes"
+                    class="form-control">
+                <option value="">Selecciona un cliente</option>
+            </select>
+            <span asp-validation-for="ClienteId"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="VehiculoId">Vehículo</label>
+            <select asp-for="VehiculoId"
+                    asp-items="Model.Vehiculos"
+                    class="form-control">
+                <option value="">Selecciona un vehículo</option>
+            </select>
+            <span asp-validation-for="VehiculoId"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="ServicioId">Servicio</label>
+            <select asp-for="ServicioId"
+                    asp-items="Model.Servicios"
+                    class="form-control">
+                <option value="">Selecciona un servicio</option>
+            </select>
+            <span asp-validation-for="ServicioId"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="FechaSolicitada">Fecha</label>
+            <input asp-for="FechaSolicitada"
+                   type="date"
+                   class="form-control"
+                   min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            <span asp-validation-for="FechaSolicitada"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="HoraSolicitada">Hora</label>
+            <input asp-for="HoraSolicitada"
+                   type="time"
+                   class="form-control" />
+            <span asp-validation-for="HoraSolicitada"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__grupo">
+            <label asp-for="Notas">Notas adicionales</label>
+            <textarea asp-for="Notas"
+                      class="form-control"
+                      rows="4"
+                      placeholder="Describe brevemente el problema o solicitud del vehículo..."></textarea>
+            <span asp-validation-for="Notas"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="formulario__acciones">
+            <button type="submit" class="btn btn--primario">
+                Agendar cita
+            </button>
+
+            <a asp-action="Index" class="btn btn--secundario">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

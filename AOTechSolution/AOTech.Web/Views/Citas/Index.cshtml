@@ -1,14 +1,30 @@
-﻿@model List<AOTech.Data.Modelos.Cita>
+﻿```cshtml
+@model List<AOTech.Data.Modelos.Cita>
 
 @{
     ViewData["Title"] = "Citas";
 }
 
 <section class="seccion">
+
     <div class="seccion__cabecera">
         <div>
             <h1>Gestión de citas</h1>
             <p>Consulta las solicitudes y organiza las citas del taller.</p>
+        </div>
+
+        <div class="celda-acciones">
+            <a asp-controller="Citas"
+               asp-action="Crear"
+               class="btn btn--primario">
+                Agendar cita
+            </a>
+
+            <a asp-controller="Citas"
+               asp-action="Historial"
+               class="btn btn--fantasma">
+                Ver historial
+            </a>
         </div>
     </div>
 
@@ -107,9 +123,7 @@
                                     @* APROBAR *@
                                     @if (cita.Estado == "Pendiente")
                                     {
-                                        <form asp-action="Aprobar"
-                                              method="post">
-
+                                        <form asp-action="Aprobar" method="post">
                                             @Html.AntiForgeryToken()
 
                                             <input type="hidden"
@@ -135,9 +149,7 @@
                                             Reprogramar
                                         </a>
 
-                                        <form asp-action="Cancelar"
-                                              method="post">
-
+                                        <form asp-action="Cancelar" method="post">
                                             @Html.AntiForgeryToken()
 
                                             <input type="hidden"
@@ -160,4 +172,5 @@
             </table>
         }
     </div>
+
 </section>
