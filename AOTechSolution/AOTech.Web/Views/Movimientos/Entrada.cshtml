@@ -1,0 +1,67 @@
+﻿@model AOTech.Web.Models.MovimientoEntradaViewModel
+
+@{
+    ViewData["Title"] = "Registrar ingreso";
+    var erroresGenerales = ViewData.ModelState.TryGetValue(string.Empty, out var entrada)
+        ? entrada!.Errors.Select(e => e.ErrorMessage).ToList()
+        : new List<string>();
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Registrar ingreso</h1>
+            <p>Suma existencias al inventario cuando llegan repuestos (compra a proveedor, devolución, etc.).</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Entrada" method="post">
+            @if (erroresGenerales.Count > 0)
+            {
+                <div class="alerta alerta--error">@string.Join(" ", erroresGenerales)</div>
+            }
+
+            @if (Model.Repuestos.Count == 0)
+            {
+                <div class="alerta alerta--info">No hay repuestos activos. Registra uno primero en la sección Repuestos.</div>
+            }
+
+            <div class="campo">
+                <label asp-for="RepuestoId"></label>
+                <select asp-for="RepuestoId">
+                    <option value="">Selecciona un repuesto…</option>
+                    @foreach (var opcion in Model.Repuestos)
+                    {
+                        <option value="@opcion.RepuestoId">@opcion.Etiqueta</option>
+                    }
+                </select>
+                <span asp-validation-for="RepuestoId" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Cantidad"></label>
+                <input asp-for="Cantidad" type="number" min="1" step="1" />
+                <span asp-validation-for="Cantidad" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Motivo"></label>
+                <input asp-for="Motivo" autocomplete="off" placeholder="Ej. Compra a proveedor, factura 1234" />
+                <span class="ayuda">Opcional, pero ayuda en la auditoría.</span>
+                <span asp-validation-for="Motivo" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario" disabled="@(Model.Repuestos.Count == 0)">Registrar ingreso</button>
+                <a asp-controller="Repuestos" asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

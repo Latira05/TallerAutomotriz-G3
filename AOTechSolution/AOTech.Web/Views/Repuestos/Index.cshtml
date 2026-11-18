@@ -1,0 +1,160 @@
+﻿@model AOTech.Web.Models.RepuestoIndexViewModel
+
+@{
+    ViewData["Title"] = "Repuestos";
+    var hayBusqueda = !string.IsNullOrWhiteSpace(Model.Buscar);
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Repuestos</h1>
+            <p>Inventario de repuestos e insumos del taller. Las existencias solo cambian con ingresos y salidas, así cada unidad queda en el historial.</p>
+        </div>
+        <div class="acciones-cabecera">
+            <a asp-controller="Movimientos" asp-action="Entrada" class="btn btn--fantasma">Registrar ingreso</a>
+            <a asp-controller="Movimientos" asp-action="Salida" class="btn btn--fantasma">Registrar salida</a>
+            <a asp-action="Validar" class="btn btn--fantasma">Validar existencias</a>
+            <a asp-controller="Movimientos" asp-action="Index" class="btn btn--fantasma">Historial</a>
+            <a asp-action="Crear" class="btn btn--primario">Nuevo repuesto</a>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="chips">
+        <a asp-action="Index" asp-route-vista="activos" asp-route-buscar="@Model.Buscar"
+           class="chip @(Model.Vista == "activos" ? "chip--activo" : "")">
+            Activos <span class="chip__n">@Model.TotalActivos</span>
+        </a>
+        <a asp-action="Index" asp-route-vista="bajo" asp-route-buscar="@Model.Buscar"
+           class="chip chip--alerta @(Model.Vista == "bajo" ? "chip--activo" : "")">
+            Stock bajo o agotado <span class="chip__n">@Model.TotalBajoStock</span>
+        </a>
+        <a asp-action="Index" asp-route-vista="baja" asp-route-buscar="@Model.Buscar"
+           class="chip @(Model.Vista == "baja" ? "chip--activo" : "")">
+            De baja <span class="chip__n">@Model.TotalDeBaja</span>
+        </a>
+    </div>
+
+    <form method="get" asp-action="Index" class="barra-busqueda">
+        <input type="hidden" name="vista" value="@Model.Vista" />
+        <input type="search" name="buscar" value="@Model.Buscar" placeholder="Buscar por nombre o descripción" />
+        <button type="submit" class="btn btn--fantasma">Buscar</button>
+        @if (hayBusqueda)
+        {
+            <a asp-action="Index" asp-route-vista="@Model.Vista" class="btn btn--fantasma">Limpiar</a>
+        }
+    </form>
+
+    <div class="tabla-wrap">
+        @if (Model.Repuestos.Count == 0)
+        {
+            <div class="tabla-vacia">
+                @if (hayBusqueda)
+                {
+                    <strong>Sin resultados</strong>
+                    <text>No hay repuestos en esta vista que coincidan con "@Model.Buscar".</text>
+                }
+                else if (Model.Vista == "bajo")
+                {
+                    <strong>Todo en orden</strong>
+                    <text>Ningún repuesto activo está en su stock mínimo o por debajo.</text>
+                }
+                else if (Model.Vista == "baja")
+                {
+                    <strong>No hay repuestos dados de baja</strong>
+                    <text>Los repuestos descontinuados aparecerán aquí.</text>
+                }
+                else
+                {
+                    <strong>Todavía no hay repuestos registrados</strong>
+                    <text>Registra el primero y luego carga sus existencias con "Ingreso".</text>
+                }
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Repuesto</th>
+                        <th class="num">Precio</th>
+                        <th class="num">Existencias</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Repuestos)
+                    {
+                        <tr>
+                            <td>
+                                <div class="celda-titulo">@r.Nombre</div>
+                                @if (!string.IsNullOrWhiteSpace(r.Descripcion))
+                                {
+                                    <div class="celda-sub">@r.Descripcion</div>
+                                }
+                            </td>
+                            <td class="num celda-mono">@r.PrecioUnitario.ToString("N2")</td>
+                            <td class="num">
+                                <span class="celda-mono celda-stock">@r.CantidadStock</span>
+                                <span class="celda-sub celda-sub--inline">mín. @r.StockMinimo</span>
+                            </td>
+                            <td>
+                                @switch (r.EstadoStock)
+                                {
+                                    case "baja":
+                                        <span class="pastilla pastilla--neutra">De baja</span>
+                                        break;
+                                    case "agotado":
+                                        <span class="pastilla pastilla--inactivo">Agotado</span>
+                                        break;
+                                    case "bajo":
+                                        <span class="pastilla pastilla--alerta">Stock bajo</span>
+                                        break;
+                                    default:
+                                        <span class="pastilla pastilla--activo">Disponible</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <div class="celda-acciones">
+                                    @if (r.EstaActivo)
+                                    {
+                                        <a asp-controller="Movimientos" asp-action="Entrada" asp-route-repuestoId="@r.RepuestoId" class="btn btn--fantasma btn--pequeno">Ingreso</a>
+                                    }
+                                    <a asp-action="Editar" asp-route-id="@r.RepuestoId" class="btn btn--fantasma btn--pequeno">Editar</a>
+                                    <form asp-action="CambiarEstado" method="post">
+                                        <input type="hidden" name="id" value="@r.RepuestoId" />
+                                        @* Se escribe como texto "true"/"false": un bool directo en el atributo
+                                           lo omite (false) o escribe value="value" (true). *@
+                                        <input type="hidden" name="activarlo" value="@(r.EstaActivo ? "false" : "true")" />
+                                        @if (r.EstaActivo)
+                                        {
+                                            <button type="submit" class="btn btn--peligro btn--pequeno"
+                                                    onclick="return confirm('¿Dar de baja este repuesto? Se conserva en el historial, pero ya no se podrán registrar movimientos con él.');">
+                                                Dar de baja
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn--fantasma btn--pequeno">Reactivar</button>
+                                        }
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

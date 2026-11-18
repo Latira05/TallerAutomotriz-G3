@@ -1,0 +1,53 @@
+﻿@model AOTech.Web.Models.ValidarExistenciasViewModel
+
+@{
+    ViewData["Title"] = "Validar existencias";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Validar existencias</h1>
+            <p>Confirma si hay unidades suficientes de un repuesto antes de autorizar su uso en una orden de servicio.</p>
+        </div>
+        <a asp-action="Index" class="btn btn--fantasma">Volver a repuestos</a>
+    </div>
+
+    <div class="form-card">
+        <form method="get" asp-action="Validar">
+            <div class="campo">
+                <label for="repuestoId">Repuesto</label>
+                <select id="repuestoId" name="repuestoId" required>
+                    <option value="">Selecciona un repuesto…</option>
+                    @foreach (var opcion in Model.Repuestos)
+                    {
+                        <option value="@opcion.RepuestoId" selected="@(opcion.RepuestoId == Model.RepuestoId)">@opcion.Etiqueta</option>
+                    }
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="cantidad">Cantidad requerida</label>
+                <input id="cantidad" name="cantidad" type="number" min="1" step="1" value="@(Model.Cantidad ?? 1)" required />
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Validar</button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Consultado)
+    {
+        <div class="resultado-validacion">
+            <div class="alerta @(Model.Disponible ? "alerta--exito" : "alerta--error")">
+                @if (!string.IsNullOrWhiteSpace(Model.NombreRepuesto))
+                {
+                    <strong>@Model.NombreRepuesto</strong>
+                    <br />
+                }
+                @Model.Mensaje
+            </div>
+        </div>
+    }
+</section>

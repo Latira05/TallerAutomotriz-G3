@@ -1,0 +1,150 @@
+﻿@model AOTech.Web.Models.MovimientoIndexViewModel
+
+@{
+    ViewData["Title"] = "Historial de movimientos";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Historial de movimientos</h1>
+            <p>Registro de entradas y salidas de repuestos, con quién lo hizo y en qué orden de servicio. Sirve para control y auditoría.</p>
+        </div>
+        <div class="acciones-cabecera">
+            <a asp-controller="Repuestos" asp-action="Index" class="btn btn--fantasma">Ver repuestos</a>
+            <a asp-action="Entrada" class="btn btn--fantasma">Registrar ingreso</a>
+            <a asp-action="Salida" class="btn btn--primario">Registrar salida</a>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <form method="get" asp-action="Index" class="filtros-form">
+        <div class="campo">
+            <label for="desde">Desde</label>
+            <input type="date" id="desde" name="desde" value="@(Model.Desde?.ToString("yyyy-MM-dd"))" />
+        </div>
+
+        <div class="campo">
+            <label for="hasta">Hasta</label>
+            <input type="date" id="hasta" name="hasta" value="@(Model.Hasta?.ToString("yyyy-MM-dd"))" />
+        </div>
+
+        <div class="campo">
+            <label for="repuestoId">Repuesto</label>
+            <select id="repuestoId" name="repuestoId">
+                <option value="">Todos</option>
+                @foreach (var opcion in Model.Repuestos)
+                {
+                    <option value="@opcion.RepuestoId" selected="@(Model.RepuestoId == opcion.RepuestoId)">@opcion.Nombre</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="ordenId">N.º de orden</label>
+            <input type="number" id="ordenId" name="ordenId" min="1" step="1" value="@Model.OrdenId" placeholder="Ej. 241" />
+        </div>
+
+        <div class="campo">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo">
+                <option value="">Todos</option>
+                <option value="Entrada" selected="@(Model.Tipo == "Entrada")">Entradas</option>
+                <option value="Salida" selected="@(Model.Tipo == "Salida")">Salidas</option>
+            </select>
+        </div>
+
+        <div class="filtros-form__botones">
+            <button type="submit" class="btn btn--primario">Filtrar</button>
+            @if (Model.HayFiltros)
+            {
+                <a asp-action="Index" class="btn btn--fantasma">Limpiar</a>
+            }
+        </div>
+    </form>
+
+    <div class="tabla-wrap">
+        @if (Model.Movimientos.Count == 0)
+        {
+            <div class="tabla-vacia">
+                @if (Model.HayFiltros)
+                {
+                    <strong>Sin resultados</strong>
+                    <text>No hay movimientos que coincidan con los filtros aplicados.</text>
+                }
+                else
+                {
+                    <strong>Todavía no hay movimientos</strong>
+                    <text>Cuando registres ingresos o salidas de repuestos aparecerán aquí.</text>
+                }
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Repuesto</th>
+                        <th class="num">Cantidad</th>
+                        <th>Orden</th>
+                        <th>Registrado por</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Movimientos)
+                    {
+                        <tr>
+                            <td class="celda-mono">@m.FechaMovimiento.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (m.TipoMovimiento == "Entrada")
+                                {
+                                    <span class="pastilla pastilla--entrada">Entrada</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla pastilla--salida">Salida</span>
+                                }
+                            </td>
+                            <td>@m.NombreRepuesto</td>
+                            <td class="num celda-mono">@(m.TipoMovimiento == "Entrada" ? "+" : "−")@m.Cantidad</td>
+                            <td class="celda-mono">
+                                @if (m.OrdenServicioId.HasValue)
+                                {
+                                    <text>#@m.OrdenServicioId.Value.ToString("D4")</text>
+                                }
+                                else
+                                {
+                                    <text>—</text>
+                                }
+                            </td>
+                            <td>@m.NombreUsuario</td>
+                            <td class="celda-sub-texto">@(string.IsNullOrWhiteSpace(m.Motivo) ? "—" : m.Motivo)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    @if (Model.TotalCoincidencias > Model.Limite)
+    {
+        <p class="nota-tabla">
+            Mostrando los @Model.Limite movimientos más recientes de @Model.TotalCoincidencias coincidencias. Afina los filtros para ver otros.
+        </p>
+    }
+    else if (Model.Movimientos.Count > 0)
+    {
+        <p class="nota-tabla">@Model.TotalCoincidencias movimiento@(Model.TotalCoincidencias == 1 ? "" : "s").</p>
+    }
+</section>

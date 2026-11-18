@@ -1,0 +1,65 @@
+﻿@model AOTech.Web.Models.RepuestoCrearViewModel
+
+@{
+    ViewData["Title"] = "Nuevo repuesto";
+    var erroresGenerales = ViewData.ModelState.TryGetValue(string.Empty, out var entrada)
+        ? entrada!.Errors.Select(e => e.ErrorMessage).ToList()
+        : new List<string>();
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Nuevo repuesto</h1>
+            <p>Registra el repuesto o insumo. Sus existencias empiezan en 0; cárgalas después con "Registrar ingreso".</p>
+        </div>
+    </div>
+
+    <div class="form-card form-card--ancho">
+        <form asp-action="Crear" method="post">
+            @if (erroresGenerales.Count > 0)
+            {
+                <div class="alerta alerta--error">@string.Join(" ", erroresGenerales)</div>
+            }
+
+            <div class="campo">
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" autocomplete="off" />
+                <span asp-validation-for="Nombre" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Descripcion"></label>
+                <textarea asp-for="Descripcion" rows="3"></textarea>
+                <span asp-validation-for="Descripcion" class="validacion"></span>
+            </div>
+
+            <div class="campos-dos">
+                <div class="campo">
+                    <label asp-for="PrecioUnitario"></label>
+                    <input asp-for="PrecioUnitario" type="number" step="0.01" min="0" inputmode="decimal" />
+                    <span class="ayuda">Usa punto para los decimales, por ejemplo 12.50.</span>
+                    <span asp-validation-for="PrecioUnitario" class="validacion"></span>
+                </div>
+
+                <div class="campo">
+                    <label asp-for="StockMinimo"></label>
+                    <input asp-for="StockMinimo" type="number" step="1" min="0" />
+                    <span class="ayuda">Al llegar a esta cantidad el repuesto aparece como "Stock bajo".</span>
+                    <span asp-validation-for="StockMinimo" class="validacion"></span>
+                </div>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Registrar repuesto</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
