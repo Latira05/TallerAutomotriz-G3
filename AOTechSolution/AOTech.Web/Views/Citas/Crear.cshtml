@@ -5,96 +5,143 @@
 }
 
 <section class="seccion">
+
     <div class="seccion__cabecera">
         <div>
-            <h1>Agendar una cita</h1>
-            <p>Completa los datos para solicitar una cita en el taller.</p>
+            <h1>Agendar cita</h1>
+            <p>
+                Completa los datos para registrar una nueva cita
+                en el taller.
+            </p>
         </div>
 
-        <a asp-action="Index" class="btn btn--secundario">
-            Volver a citas
+        <a asp-controller="Citas"
+           asp-action="Index"
+           class="btn btn--fantasma">
+            Volver
         </a>
     </div>
 
-    <form asp-action="Crear" method="post" class="formulario">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">
+            @TempData["Error"]
+        </div>
+    }
+
+    <form asp-controller="Citas"
+          asp-action="Crear"
+          method="post"
+          class="formulario">
+
         @Html.AntiForgeryToken()
 
         <div asp-validation-summary="ModelOnly"
-             class="text-danger">
+             class="alerta alerta--error">
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="ClienteId">Cliente</label>
+        <div class="campo">
+            <label asp-for="ClienteId"></label>
+
             <select asp-for="ClienteId"
                     asp-items="Model.Clientes"
                     class="form-control">
-                <option value="">Selecciona un cliente</option>
+                <option value="">Seleccione un cliente</option>
             </select>
+
             <span asp-validation-for="ClienteId"
                   class="text-danger"></span>
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="VehiculoId">Vehículo</label>
+        <div class="campo">
+            <label asp-for="VehiculoId"></label>
+
             <select asp-for="VehiculoId"
                     asp-items="Model.Vehiculos"
                     class="form-control">
-                <option value="">Selecciona un vehículo</option>
+                <option value="">Seleccione un vehículo</option>
             </select>
+
             <span asp-validation-for="VehiculoId"
                   class="text-danger"></span>
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="ServicioId">Servicio</label>
+        <div class="campo">
+            <label asp-for="ServicioId"></label>
+
             <select asp-for="ServicioId"
                     asp-items="Model.Servicios"
                     class="form-control">
-                <option value="">Selecciona un servicio</option>
+                <option value="">Seleccione un servicio</option>
             </select>
+
             <span asp-validation-for="ServicioId"
                   class="text-danger"></span>
+
+            <small>
+                La duración estimada de cada servicio se muestra
+                en las opciones disponibles.
+            </small>
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="FechaSolicitada">Fecha</label>
+        <div class="campo">
+            <label asp-for="FechaSolicitada"></label>
+
             <input asp-for="FechaSolicitada"
                    type="date"
                    class="form-control"
                    min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+
             <span asp-validation-for="FechaSolicitada"
                   class="text-danger"></span>
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="HoraSolicitada">Hora</label>
+        <div class="campo">
+            <label asp-for="HoraSolicitada"></label>
+
             <input asp-for="HoraSolicitada"
                    type="time"
-                   class="form-control" />
+                   class="form-control"
+                   step="1800" />
+
             <span asp-validation-for="HoraSolicitada"
                   class="text-danger"></span>
+
+            <small>
+                El horario y la disponibilidad de bahías
+                se comprobarán al registrar la cita.
+            </small>
         </div>
 
-        <div class="formulario__grupo">
-            <label asp-for="Notas">Notas adicionales</label>
+        <div class="campo">
+            <label asp-for="Notas"></label>
+
             <textarea asp-for="Notas"
                       class="form-control"
                       rows="4"
-                      placeholder="Describe brevemente el problema o solicitud del vehículo..."></textarea>
+                      maxlength="500"
+                      placeholder="Describe algún detalle adicional del servicio..."></textarea>
+
             <span asp-validation-for="Notas"
                   class="text-danger"></span>
         </div>
 
-        <div class="formulario__acciones">
+        <div class="celda-acciones">
+
             <button type="submit" class="btn btn--primario">
                 Agendar cita
             </button>
 
-            <a asp-action="Index" class="btn btn--secundario">
+            <a asp-controller="Citas"
+               asp-action="Index"
+               class="btn btn--fantasma">
                 Cancelar
             </a>
+
         </div>
+
     </form>
+
 </section>
 
 @section Scripts {

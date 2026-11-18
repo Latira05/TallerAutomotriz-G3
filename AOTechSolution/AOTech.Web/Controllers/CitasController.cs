@@ -1,11 +1,11 @@
-﻿using AOTech.Data.Contexto;
+﻿
+using AOTech.Data.Contexto;
 using AOTech.Data.Modelos;
 using AOTech.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace AOTech.Web.Controllers
 {
@@ -89,7 +89,6 @@ namespace AOTech.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Validar que la cita pueda cancelarse
             if (cita.Estado != "Pendiente" &&
                 cita.Estado != "Aprobada" &&
                 cita.Estado != "Reprogramada")
@@ -100,7 +99,6 @@ namespace AOTech.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Actualizar estado
             cita.Estado = "Cancelada";
             cita.FechaActualizacion = DateTime.UtcNow;
 
@@ -202,65 +200,20 @@ namespace AOTech.Web.Controllers
                 return View(modelo);
             }
 
-            // Buscar regla específica del servicio o regla general
-            byte diaSemana = (byte)fechaNueva.DayOfWeek;
+            // Validar horario, duración y capacidad
+            // Se excluye la cita actual para evitar contarla dos veces.
+            string? errorDisponibilidad =
+                await ValidarDisponibilidadAsync(
+                    fechaNueva,
+                    horaNueva,
+                    cita.ServicioId,
+                    cita.CitaId);
 
-            var reglas = await _contexto.ReglasAgenda
-                .Where(r =>
-                    r.DiaSemana == diaSemana &&
-                    (r.ServicioId == null ||
-                     r.ServicioId == cita.ServicioId))
-                .OrderBy(r => r.HoraApertura)
-                .ToListAsync();
-
-            var regla = reglas.FirstOrDefault(
-                r => r.ServicioId.HasValue &&
-                     r.ServicioId == cita.ServicioId)
-                ?? reglas.FirstOrDefault(r => r.ServicioId == null);
-
-            if (regla == null)
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    "No hay horarios configurados para esa fecha y servicio.");
-
-                return View(modelo);
-            }
-
-            // Validar horario de atención
-            if (horaNueva < regla.HoraApertura ||
-                horaNueva >= regla.HoraCierre)
+            if (errorDisponibilidad != null)
             {
                 ModelState.AddModelError(
                     nameof(modelo.HoraSolicitada),
-                    "La hora está fuera del horario de atención.");
-
-                return View(modelo);
-            }
-
-            // Comprobar capacidad en el horario solicitado
-            string[] estadosOcupados =
-            {
-                "Pendiente",
-                "Aprobada",
-                "Reprogramada"
-            };
-
-            int citasOcupadas = await _contexto.Citas
-                .CountAsync(c =>
-                    c.CitaId != cita.CitaId &&
-                    c.FechaSolicitada == fechaNueva &&
-                    c.HoraSolicitada == horaNueva &&
-                    estadosOcupados.Contains(c.Estado) &&
-                    (c.ServicioId == cita.ServicioId ||
-                     c.ServicioId == null ||
-                     cita.ServicioId == null));
-
-            if (citasOcupadas >= regla.CapacidadBahias)
-            {
-                ModelState.AddModelError(
-                    nameof(modelo.HoraSolicitada),
-                    "El horario seleccionado está ocupado.");
+                    errorDisponibilidad);
 
                 return View(modelo);
             }
@@ -283,10 +236,10 @@ namespace AOTech.Web.Controllers
         [HttpGet]
         // [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Historial(
-    int? clienteId,
-    string? estado,
-    DateOnly? fechaDesde,
-    DateOnly? fechaHasta)
+            int? clienteId,
+            string? estado,
+            DateOnly? fechaDesde,
+            DateOnly? fechaHasta)
         {
             // Validar rango de fechas antes de consultar
             if (fechaDesde.HasValue &&
@@ -370,7 +323,8 @@ namespace AOTech.Web.Controllers
         // AGENDAR CITA - GUARDAR
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear(CrearCitaViewModel modelo)
+        public async Task<IActionResult> Crear(
+            CrearCitaViewModel modelo)
         {
             // Comprobar que los datos sean válidos
             if (!ModelState.IsValid)
@@ -398,7 +352,9 @@ namespace AOTech.Web.Controllers
 
             // Validar cliente activo
             bool clienteValido = await _contexto.Clientes
-                .AnyAsync(c => c.ClienteId == clienteId && c.EstaActivo);
+                .AnyAsync(c =>
+                    c.ClienteId == clienteId &&
+                    c.EstaActivo);
 
             if (!clienteValido)
             {
@@ -457,63 +413,18 @@ namespace AOTech.Web.Controllers
                 return View(modelo);
             }
 
-            // Buscar regla de agenda específica del servicio o general
-            byte diaSemana = (byte)fecha.DayOfWeek;
+            // Validar horario, duración y capacidad
+            string? errorDisponibilidad =
+                await ValidarDisponibilidadAsync(
+                    fecha,
+                    hora,
+                    servicioId);
 
-            var reglas = await _contexto.ReglasAgenda
-                .Where(r =>
-                    r.DiaSemana == diaSemana &&
-                    (r.ServicioId == null || r.ServicioId == servicioId))
-                .OrderBy(r => r.HoraApertura)
-                .ToListAsync();
-
-            var regla = reglas.FirstOrDefault(r =>
-                    r.ServicioId.HasValue &&
-                    r.ServicioId == servicioId)
-                ?? reglas.FirstOrDefault(r => r.ServicioId == null);
-
-            if (regla == null)
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    "No hay horarios configurados para la fecha y el servicio seleccionados.");
-
-                await CargarListasCrearCita(modelo);
-                return View(modelo);
-            }
-
-            // Validar horario de atención
-            if (hora < regla.HoraApertura || hora >= regla.HoraCierre)
+            if (errorDisponibilidad != null)
             {
                 ModelState.AddModelError(
                     nameof(modelo.HoraSolicitada),
-                    "La hora está fuera del horario de atención.");
-
-                await CargarListasCrearCita(modelo);
-                return View(modelo);
-            }
-
-            // Comprobar capacidad del horario
-            string[] estadosOcupados =
-            {
-        "Pendiente",
-        "Aprobada",
-        "Reprogramada"
-    };
-
-            int citasOcupadas = await _contexto.Citas
-                .CountAsync(c =>
-                    c.FechaSolicitada == fecha &&
-                    c.HoraSolicitada == hora &&
-                    estadosOcupados.Contains(c.Estado) &&
-                    (c.ServicioId == servicioId ||
-                     c.ServicioId == null));
-
-            if (citasOcupadas >= regla.CapacidadBahias)
-            {
-                ModelState.AddModelError(
-                    nameof(modelo.HoraSolicitada),
-                    "El horario seleccionado ya no tiene espacios disponibles.");
+                    errorDisponibilidad);
 
                 await CargarListasCrearCita(modelo);
                 return View(modelo);
@@ -536,13 +447,15 @@ namespace AOTech.Web.Controllers
 
             await _contexto.SaveChangesAsync();
 
-            TempData["Exito"] = "La cita fue agendada correctamente y está pendiente de aprobación.";
+            TempData["Exito"] =
+                "La cita fue agendada correctamente y está pendiente de aprobación.";
 
             return RedirectToAction(nameof(Index));
         }
 
         // CARGAR LISTAS DEL FORMULARIO
-        private async Task CargarListasCrearCita(CrearCitaViewModel modelo)
+        private async Task CargarListasCrearCita(
+            CrearCitaViewModel modelo)
         {
             modelo.Clientes = await _contexto.Clientes
                 .AsNoTracking()
@@ -562,7 +475,8 @@ namespace AOTech.Web.Controllers
                 .Select(v => new SelectListItem
                 {
                     Value = v.VehiculoId.ToString(),
-                    Text = v.Placa + " - " + v.Marca + " " + v.Modelo
+                    Text = v.Placa + " - " +
+                           v.Marca + " " + v.Modelo
                 })
                 .ToListAsync();
 
@@ -573,13 +487,164 @@ namespace AOTech.Web.Controllers
                 .Select(s => new SelectListItem
                 {
                     Value = s.ServicioId.ToString(),
-                    Text = s.Nombre
+                    Text = s.Nombre + " (" +
+                           s.DuracionEstimadaMinutos + " min)"
                 })
                 .ToListAsync();
         }
 
+        // VALIDAR DISPONIBILIDAD, DURACIÓN Y CAPACIDAD
+        private async Task<string?> ValidarDisponibilidadAsync(
+            DateOnly fecha,
+            TimeOnly hora,
+            int? servicioId,
+            int? citaExcluirId = null)
+        {
+            // Verificar que exista un servicio asociado
+            if (!servicioId.HasValue)
+            {
+                return "La cita no tiene un servicio asociado para calcular su duración.";
+            }
+
+            // Obtener duración del servicio
+            var servicio = await _contexto.CatalogoServicios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s =>
+                    s.ServicioId == servicioId.Value);
+
+            if (servicio == null)
+            {
+                return "No se encontró el servicio seleccionado.";
+            }
+
+            int duracionNueva = servicio.DuracionEstimadaMinutos;
+
+            if (duracionNueva <= 0)
+            {
+                return "La duración configurada para el servicio no es válida.";
+            }
+
+            // Calcular inicio y final de la nueva cita
+            DateTime inicioNueva = fecha.ToDateTime(hora);
+            DateTime finNueva = inicioNueva.AddMinutes(duracionNueva);
+
+            // Obtener regla específica o general
+            byte diaSemana = (byte)fecha.DayOfWeek;
+
+            var reglas = await _contexto.ReglasAgenda
+                .Where(r =>
+                    r.DiaSemana == diaSemana &&
+                    (r.ServicioId == null ||
+                     r.ServicioId == servicioId.Value))
+                .OrderBy(r => r.HoraApertura)
+                .ToListAsync();
+
+            var regla = reglas.FirstOrDefault(r =>
+                    r.ServicioId.HasValue &&
+                    r.ServicioId == servicioId.Value)
+                ?? reglas.FirstOrDefault(r =>
+                    r.ServicioId == null);
+
+            if (regla == null)
+            {
+                return "No hay horarios configurados para la fecha y el servicio seleccionados.";
+            }
+
+            // Validar horario completo de la cita
+            DateTime apertura = fecha.ToDateTime(regla.HoraApertura);
+            DateTime cierre = fecha.ToDateTime(regla.HoraCierre);
+
+            if (inicioNueva < apertura || finNueva > cierre)
+            {
+                return "La duración de la cita supera el horario de atención del taller.";
+            }
+
+            // Estados que ocupan una bahía
+            string[] estadosOcupados =
+            {
+                "Pendiente",
+                "Aprobada",
+                "Reprogramada"
+            };
+
+            // Consultar citas existentes del mismo día
+            var citasExistentes = await _contexto.Citas
+                .AsNoTracking()
+                .Include(c => c.Servicio)
+                .Where(c =>
+                    c.FechaSolicitada == fecha &&
+                    c.CitaId != (citaExcluirId ?? 0) &&
+                    estadosOcupados.Contains(c.Estado))
+                .ToListAsync();
+
+            // Construir intervalos de las citas existentes
+            var intervalosExistentes = new List<(DateTime Inicio, DateTime Fin)>();
+
+            foreach (var existente in citasExistentes)
+            {
+                int duracionExistente =
+                    existente.Servicio?.DuracionEstimadaMinutos
+                    ?? duracionNueva;
+
+                // Evitar duraciones inválidas en registros existentes
+                if (duracionExistente <= 0)
+                {
+                    duracionExistente = duracionNueva;
+                }
+
+                DateTime inicioExistente =
+                    existente.FechaSolicitada.ToDateTime(
+                        existente.HoraSolicitada);
+
+                DateTime finExistente =
+                    inicioExistente.AddMinutes(duracionExistente);
+
+                intervalosExistentes.Add((
+                    inicioExistente,
+                    finExistente
+                ));
+            }
+
+            // Revisar los momentos en los que puede aumentar
+            // la ocupación durante la nueva cita.
+            var puntosRevision = new List<DateTime>
+            {
+                inicioNueva
+            };
+
+            foreach (var intervalo in intervalosExistentes)
+            {
+                if (intervalo.Inicio > inicioNueva &&
+                    intervalo.Inicio < finNueva)
+                {
+                    puntosRevision.Add(intervalo.Inicio);
+                }
+            }
+
+            // Comprobar ocupación máxima simultánea
+            foreach (var punto in puntosRevision)
+            {
+                int ocupacion = 1; // La nueva cita ocupa una bahía
+
+                foreach (var intervalo in intervalosExistentes)
+                {
+                    bool estaOcupada =
+                        intervalo.Inicio <= punto &&
+                        intervalo.Fin > punto;
+
+                    if (estaOcupada)
+                    {
+                        ocupacion++;
+                    }
+                }
+
+                if (ocupacion > regla.CapacidadBahias)
+                {
+                    return "No hay suficientes bahías disponibles durante toda la duración de ese horario.";
+                }
+            }
+
+            return null;
+        }
     }
-
-
-
 }
