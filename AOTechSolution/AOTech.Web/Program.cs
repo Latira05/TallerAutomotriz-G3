@@ -13,6 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AOTechDbContext>(opciones =>
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("AOTechBD")));
 
+var cadena = builder.Configuration.GetConnectionString("AOTechBD")
+    ?? throw new InvalidOperationException("Falta la cadena de conexión 'AOTechBD'. Configúrala con user-secrets (ver README).");
+
 // Cliente HTTP para consumir AOTech.API
 builder.Services.AddHttpClient("AOTechApi", cliente =>
 {
