@@ -1,0 +1,218 @@
+﻿
+@model AOTech.Web.Models.HistorialCitasViewModel
+
+@{
+    ViewData["Title"] = "Historial de citas";
+}
+
+<section class="seccion">
+
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Historial de citas</h1>
+            <p>Consulta y filtra los registros históricos del taller.</p>
+        </div>
+
+        <a asp-controller="Citas"
+           asp-action="Index"
+           class="btn btn--fantasma">
+            Volver a gestión de citas
+        </a>
+    </div>
+
+    @* MENSAJES *@
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">
+            @TempData["Error"]
+        </div>
+    }
+
+    @* FILTROS *@
+
+    <div class="tabla-wrap">
+
+        <form asp-action="Historial" method="get">
+
+            <div class="formulario-grid">
+
+                <div class="formulario__grupo">
+                    <label for="clienteId">ID del cliente</label>
+
+                    <input type="number"
+                           id="clienteId"
+                           name="clienteId"
+                           min="1"
+                           value="@Model.ClienteId"
+                           placeholder="Ingrese el ID del cliente" />
+                </div>
+
+                <div class="formulario__grupo">
+                    <label for="estado">Estado</label>
+
+                    <select id="estado" name="estado">
+                        <option value="">Todos los estados</option>
+
+                        <option value="Pendiente"
+                                selected="@(Model.Estado == "Pendiente")">
+                            Pendiente
+                        </option>
+
+                        <option value="Aprobada"
+                                selected="@(Model.Estado == "Aprobada")">
+                            Aprobada
+                        </option>
+
+                        <option value="Reprogramada"
+                                selected="@(Model.Estado == "Reprogramada")">
+                            Reprogramada
+                        </option>
+
+                        <option value="Cancelada"
+                                selected="@(Model.Estado == "Cancelada")">
+                            Cancelada
+                        </option>
+                    </select>
+                </div>
+
+                <div class="formulario__grupo">
+                    <label for="fechaDesde">Fecha desde</label>
+
+                    <input type="date"
+                           id="fechaDesde"
+                           name="fechaDesde"
+                           value="@(Model.FechaDesde?.ToString("yyyy-MM-dd"))" />
+                </div>
+
+                <div class="formulario__grupo">
+                    <label for="fechaHasta">Fecha hasta</label>
+
+                    <input type="date"
+                           id="fechaHasta"
+                           name="fechaHasta"
+                           value="@(Model.FechaHasta?.ToString("yyyy-MM-dd"))" />
+                </div>
+
+            </div>
+
+            <div class="celda-acciones">
+
+                <button type="submit"
+                        class="btn btn--primario">
+                    Filtrar
+                </button>
+
+                <a asp-action="Historial"
+                   class="btn btn--fantasma">
+                    Limpiar filtros
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    @* RESULTADOS *@
+
+    <div class="tabla-wrap">
+
+        @if (Model.Citas == null || Model.Citas.Count == 0)
+        {
+            <div class="tabla-vacia">
+                <strong>No hay registros de citas</strong>
+
+                <text>
+                    No se encontraron citas que coincidan con los
+                    criterios de búsqueda seleccionados.
+                </text>
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Servicio</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Fecha de registro</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var cita in Model.Citas)
+                    {
+                        <tr>
+
+                            <td class="celda-mono">
+                                @cita.CitaId
+                            </td>
+
+                            <td>
+                                @cita.ClienteId
+                            </td>
+
+                            <td>
+                                @cita.VehiculoId
+                            </td>
+
+                            <td>
+                                @(cita.ServicioId?.ToString() ?? "—")
+                            </td>
+
+                            <td class="celda-mono">
+                                @cita.FechaSolicitada.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td class="celda-mono">
+                                @cita.HoraSolicitada.ToString("HH:mm")
+                            </td>
+
+                            <td>
+                                @if (cita.Estado == "Aprobada")
+                                {
+                                    <span class="pastilla pastilla--activo">
+                                        Aprobada
+                                    </span>
+                                }
+                                else if (cita.Estado == "Cancelada")
+                                {
+                                    <span class="pastilla pastilla--inactivo">
+                                        Cancelada
+                                    </span>
+                                }
+                                else if (cita.Estado == "Pendiente")
+                                {
+                                    <span class="pastilla">
+                                        Pendiente
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla">
+                                        @cita.Estado
+                                    </span>
+                                }
+                            </td>
+
+                            <td class="celda-mono">
+                                @cita.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+
+    </div>
+
+</section>
