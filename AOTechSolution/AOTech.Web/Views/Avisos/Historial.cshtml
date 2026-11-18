@@ -1,0 +1,68 @@
+@model AOTech.Web.Models.AvisoHistorialViewModel
+
+@{
+    ViewData["Title"] = "Historial de avisos";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Historial de avisos enviados</h1>
+            <p>Consulta el envío interno y el estado de lectura de cada destinatario.</p>
+        </div>
+        <a asp-action="Index" class="btn btn--fantasma">Volver a avisos</a>
+    </div>
+
+    <form method="get" asp-action="Historial" class="barra-busqueda">
+        <label for="fechaDesde">Desde</label>
+        <input id="fechaDesde" type="date" name="fechaDesde" value="@(Model.FechaDesde?.ToString("yyyy-MM-dd"))" />
+        <label for="fechaHasta">Hasta</label>
+        <input id="fechaHasta" type="date" name="fechaHasta" value="@(Model.FechaHasta?.ToString("yyyy-MM-dd"))" />
+        <select name="usuarioDestinatarioId">
+            <option value="">Todos los destinatarios</option>
+            @foreach (var cliente in Model.DestinatariosDisponibles)
+            {
+                <option value="@cliente.UsuarioId" selected="@(Model.UsuarioDestinatarioId == cliente.UsuarioId ? "selected" : null)">
+                    @cliente.NombreCompleto — @cliente.CodigoClienteFrecuente
+                </option>
+            }
+        </select>
+        <button type="submit" class="btn btn--fantasma">Filtrar</button>
+        <a asp-action="Historial" class="btn btn--fantasma">Limpiar</a>
+    </form>
+
+    <div class="tabla-wrap">
+        @if (Model.Avisos.Count == 0)
+        {
+            <div class="tabla-vacia"><strong>No hay avisos enviados para esos filtros</strong></div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Enviado</th>
+                        <th>Destinatarios</th>
+                        <th>Leídos</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var aviso in Model.Avisos)
+                    {
+                        <tr>
+                            <td>@aviso.Titulo</td>
+                            <td class="celda-mono">@aviso.FechaEnvio?.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@aviso.CantidadDestinatarios</td>
+                            <td>@aviso.CantidadLeidos / @aviso.CantidadDestinatarios</td>
+                            <td><span class="pastilla pastilla--activo">Enviado internamente</span></td>
+                            <td><a asp-action="Detalles" asp-route-id="@aviso.AvisoId" class="btn btn--fantasma btn--pequeno">Ver historial</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

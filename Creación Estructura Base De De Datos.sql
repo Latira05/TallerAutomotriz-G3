@@ -424,3 +424,160 @@ INSERT INTO Seguridad.Roles (NombreRol, Descripcion) VALUES
     (N'Mecanico', N'Ejecución y actualización de órdenes de servicio e inventario'),
     (N'Cliente', N'Acceso a su información, citas, pagos y cursos');
 GO
+
+
+USE AOTechBD;
+
+INSERT INTO Seguridad.Usuarios
+(
+   RolId,
+   NombreUsuario,
+   Correo,
+   ContrasenaHash,
+   ContrasenaSalt,
+   NombreCompleto,
+   EstaActivo
+)
+VALUES
+(
+   1,
+   'admin',
+   'admin@aotech.com',
+   HASHBYTES('SHA2_256', 'Admin123'),
+   CONVERT(VARBINARY(128), 'SaltAdmin'),
+   'Administrador del Sistema',
+   1
+),
+(
+   2,
+   'recepcion',
+   'recepcion@aotech.com',
+   HASHBYTES('SHA2_256', 'Recepcion123'),
+   CONVERT(VARBINARY(128), 'SaltRecepcion'),
+   'María Recepción',
+   1
+),
+(
+   3,
+   'mecanico',
+   'mecanico@aotech.com',
+   HASHBYTES('SHA2_256', 'Mecanico123'),
+   CONVERT(VARBINARY(128), 'SaltMecanico'),
+   'Juan Mecánico',
+   1
+),
+(
+   4,
+   'cliente',
+   'cliente@aotech.com',
+   HASHBYTES('SHA2_256', 'Cliente123'),
+   CONVERT(VARBINARY(128), 'SaltCliente'),
+   'Pedro Cliente',
+   1
+);
+
+SELECT * FROM Seguridad.Usuarios;
+
+SELECT @@SERVERNAME AS Servidor;
+SELECT DB_NAME() AS BaseDatosActual;
+
+
+USE AOTechBD;
+GO
+
+-- =============================================
+-- MODULO: COMUNICACIONES Y AVISOS CORRER PARA QUE TODO FUNCIONE
+-- =============================================
+
+-- Crear esquema si no existe
+IF NOT EXISTS (
+    SELECT 1 FROM sys.schemas
+    WHERE name = 'Comunicaciones'
+)
+BEGIN
+    EXEC('CREATE SCHEMA Comunicaciones');
+END;
+GO
+
+-- Tabla de avisos
+IF OBJECT_ID('Comunicaciones.Avisos', 'U') IS NULL
+BEGIN
+    CREATE TABLE Comunicaciones.Avisos (
+        AvisoId INT IDENTITY(1,1) NOT NULL,
+        Titulo NVARCHAR(150) NOT NULL,
+        Mensaje NVARCHAR(MAX) NOT NULL,
+        UsuarioCreadorId INT NOT NULL,
+        FechaCreacion DATETIME2 NOT NULL,
+        Estado NVARCHAR(20) NOT NULL
+            CONSTRAINT DF_Avisos_Estado DEFAULT N'Borrador',
+        FechaEnvio DATETIME2 NULL,
+
+        CONSTRAINT PK_Avisos
+            PRIMARY KEY (AvisoId),
+
+        CONSTRAINT CK_Avisos_Estado
+            CHECK (Estado IN (N'Borrador', N'Enviado')),
+
+        CONSTRAINT FK_Avisos_Usuarios_Creador
+            FOREIGN KEY (UsuarioCreadorId)
+            REFERENCES Seguridad.Usuarios(UsuarioId)
+    );
+END;
+GO
+
+-- Tabla de destinatarios
+IF OBJECT_ID('Comunicaciones.AvisoDestinatarios', 'U') IS NULL
+BEGIN
+    CREATE TABLE Comunicaciones.AvisoDestinatarios (
+        AvisoId INT NOT NULL,
+        UsuarioId INT NOT NULL,
+        FechaLectura DATETIME2 NULL,
+
+        CONSTRAINT PK_AvisoDestinatarios
+            PRIMARY KEY (AvisoId, UsuarioId),
+
+        CONSTRAINT FK_AvisoDestinatarios_Avisos
+            FOREIGN KEY (AvisoId)
+            REFERENCES Comunicaciones.Avisos(AvisoId)
+            ON DELETE CASCADE,
+
+        CONSTRAINT FK_AvisoDestinatarios_Usuarios
+            FOREIGN KEY (UsuarioId)
+            REFERENCES Seguridad.Usuarios(UsuarioId)
+    );
+END;
+GO
+
+-- Índices
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_Avisos_UsuarioCreadorId'
+      AND object_id = OBJECT_ID('Comunicaciones.Avisos')
+)
+BEGIN
+    CREATE INDEX IX_Avisos_UsuarioCreadorId
+    ON Comunicaciones.Avisos(UsuarioCreadorId);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_Avisos_Estado_FechaCreacion'
+      AND object_id = OBJECT_ID('Comunicaciones.Avisos')
+)
+BEGIN
+    CREATE INDEX IX_Avisos_Estado_FechaCreacion
+    ON Comunicaciones.Avisos(Estado, FechaCreacion);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_AvisoDestinatarios_UsuarioId_FechaLectura'
+      AND object_id = OBJECT_ID('Comunicaciones.AvisoDestinatarios')
+)
+BEGIN
+    CREATE INDEX IX_AvisoDestinatarios_UsuarioId_FechaLectura
+    ON Comunicaciones.AvisoDestinatarios(UsuarioId, FechaLectura);
+END;
+GO

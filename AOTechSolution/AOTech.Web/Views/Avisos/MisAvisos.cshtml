@@ -1,0 +1,54 @@
+@model List<AOTech.Web.Models.AvisoBandejaViewModel>
+
+@{
+    ViewData["Title"] = "Mis avisos";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Mis avisos</h1>
+            <p>Notificaciones internas dirigidas a tu cuenta.</p>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+
+    <div class="tabla-wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="tabla-vacia"><strong>No tienes avisos nuevos o enviados</strong></div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr><th>Título</th><th>Fecha de envío</th><th>Estado</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var aviso in Model)
+                    {
+                        <tr>
+                            <td>@aviso.Titulo</td>
+                            <td class="celda-mono">@aviso.FechaEnvio.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (aviso.FechaLectura.HasValue)
+                                {
+                                    <span class="pastilla pastilla--activo">Leído</span>
+                                }
+                                else
+                                {
+                                    <span class="pastilla pastilla--proceso">Pendiente de lectura</span>
+                                }
+                            </td>
+                            <td><a asp-action="MiDetalle" asp-route-id="@aviso.AvisoId" class="btn btn--fantasma btn--pequeno">Consultar</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>
