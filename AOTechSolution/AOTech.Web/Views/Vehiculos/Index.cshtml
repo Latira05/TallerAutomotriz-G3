@@ -1,7 +1,7 @@
 @model List<AOTech.Web.Models.VehiculoListaViewModel>
 
 @{
-    ViewData["Title"] = "Vehículos";
+    ViewData["Title"] = "VehÃ­culos";
     var buscar = ViewBag.Buscar as string;
     var hayBusqueda = !string.IsNullOrWhiteSpace(buscar);
 }
@@ -9,10 +9,10 @@
 <section class="seccion">
     <div class="seccion__cabecera">
         <div>
-            <h1>Vehículos</h1>
-            <p>Vehículos registrados y asociados a sus clientes propietarios.</p>
+            <h1>VehÃ­culos</h1>
+            <p>VehÃ­culos registrados y asociados a sus clientes propietarios.</p>
         </div>
-        <a asp-action="Crear" class="btn btn--primario">Nuevo vehículo</a>
+        <a asp-action="Crear" class="btn btn--primario">Nuevo vehÃ­culo</a>
     </div>
 
     @if (TempData["Exito"] != null)
@@ -40,11 +40,11 @@
                 @if (hayBusqueda)
                 {
                     <strong>Sin resultados</strong>
-                    <text>No hay vehículos que coincidan con "@buscar".</text>
+                    <text>No hay vehÃ­culos que coincidan con "@buscar".</text>
                 }
                 else
                 {
-                    <strong>Todavía no hay vehículos registrados</strong>
+                    <strong>TodavÃ­a no hay vehÃ­culos registrados</strong>
                     <text>Registra el primero para empezar a llevar el control.</text>
                 }
             </div>
@@ -55,7 +55,7 @@
                 <thead>
                     <tr>
                         <th>Placa</th>
-                        <th>Vehículo</th>
+                        <th>VehÃ­culo</th>
                         <th>Cliente</th>
                         <th>Kilometraje</th>
                         <th>Estado</th>

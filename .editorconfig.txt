@@ -1,0 +1,15 @@
+# Configuración compartida del editor (Visual Studio, VS Code, Rider...).
+root = true
+
+# Por defecto, todo se guarda en UTF-8 (así las tildes y la ñ no se dañan)
+[]
+charset = utf-8
+
+# Los scripts SQL llevan BOM para que SSMS reconozca las tildes al abrirlos
+[.sql]
+charset = utf-8-bom
+
+# Código y vistas sangría de 4 espacios
+[.{cs,cshtml,css,js,json,csproj}]
+indent_style = space
+indent_size = 4

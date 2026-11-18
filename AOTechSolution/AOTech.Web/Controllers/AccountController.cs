@@ -43,7 +43,7 @@ public class AccountController : Controller
 
         if (usuario == null || !usuario.EstaActivo)
         {
-            ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseña incorrectos.");
+            ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseÃ±a incorrectos.");
             return View(modelo);
         }
 
@@ -52,7 +52,7 @@ public class AccountController : Controller
 
         if (!CryptographicOperations.FixedTimeEquals(computedHash, usuario.ContrasenaHash))
         {
-            ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseña incorrectos.");
+            ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseÃ±a incorrectos.");
             return View(modelo);
         }
 

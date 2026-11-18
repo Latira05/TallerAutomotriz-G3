@@ -8,7 +8,7 @@
     <div class="seccion__cabecera">
         <div>
             <h1>@Model.Titulo</h1>
-            <p>Notificación interna recibida el @Model.FechaEnvio.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
+            <p>NotificaciÃ³n interna recibida el @Model.FechaEnvio.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
         </div>
     </div>
 
@@ -25,13 +25,13 @@
         <p>@Model.Mensaje</p>
         @if (Model.FechaLectura.HasValue)
         {
-            <p>Leído el @Model.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
+            <p>LeÃ­do el @Model.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm").</p>
         }
         else
         {
             <form asp-action="MarcarLeido" asp-route-id="@Model.AvisoId" method="post">
                 @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn--primario">Marcar como leído</button>
+                <button type="submit" class="btn btn--primario">Marcar como leÃ­do</button>
             </form>
         }
         <div class="form-acciones">
