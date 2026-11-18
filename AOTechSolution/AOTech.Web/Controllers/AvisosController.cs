@@ -1,4 +1,4 @@
-using System.Security.Claims;
+Ôªøusing System.Security.Claims;
 using System.Data;
 using AOTech.Data.Contexto;
 using AOTech.Data.Modelos;
@@ -101,7 +101,7 @@ public class AvisosController : Controller
             _contexto.Avisos.Add(aviso);
             await _contexto.SaveChangesAsync();
 
-            _contexto.AvisosDestinatarios.AddRange(destinatarios.Select(usuarioId => new AvisoDestinatario
+            _contexto.AvisoDestinatarios.AddRange(destinatarios.Select(usuarioId => new AvisoDestinatario
             {
                 AvisoId = aviso.AvisoId,
                 UsuarioId = usuarioId
@@ -114,7 +114,7 @@ public class AvisosController : Controller
         {
             await transaccion.RollbackAsync();
             _logger.LogError(ex, "Error al crear el aviso y sus destinatarios.");
-            ModelState.AddModelError(string.Empty, "No se pudo guardar el aviso. Revisa los datos e intÈntalo de nuevo.");
+            ModelState.AddModelError(string.Empty, "No se pudo guardar el aviso. Revisa los datos e int√©ntalo de nuevo.");
             await CargarClientesDisponiblesAsync(entrada);
             return View(entrada);
         }
@@ -147,7 +147,7 @@ public class AvisosController : Controller
             AvisoId = aviso.AvisoId,
             Titulo = aviso.Titulo,
             Mensaje = aviso.Mensaje,
-            ClienteIds = await _contexto.AvisosDestinatarios
+            ClienteIds = await _contexto.AvisoDestinatarios
                 .Where(d => d.AvisoId == id)
                 .Join(_contexto.Clientes, d => d.UsuarioId, c => c.UsuarioId, (d, c) => c.ClienteId)
                 .ToListAsync()
@@ -189,15 +189,15 @@ public class AvisosController : Controller
                 return RedirectToAction(nameof(Detalles), new { id = entrada.AvisoId });
             }
 
-            var destinatariosActuales = await _contexto.AvisosDestinatarios
+            var destinatariosActuales = await _contexto.AvisoDestinatarios
                 .Where(d => d.AvisoId == entrada.AvisoId)
                 .ToListAsync();
             var idsActuales = destinatariosActuales.Select(d => d.UsuarioId).ToHashSet();
             var idsNuevos = destinatarios.ToHashSet();
 
-            _contexto.AvisosDestinatarios.RemoveRange(
+            _contexto.AvisoDestinatarios.RemoveRange(
                 destinatariosActuales.Where(d => !idsNuevos.Contains(d.UsuarioId)));
-            _contexto.AvisosDestinatarios.AddRange(
+            _contexto.AvisoDestinatarios.AddRange(
                 idsNuevos.Where(usuarioId => !idsActuales.Contains(usuarioId)).Select(usuarioId => new AvisoDestinatario
                 {
                     AvisoId = aviso.AvisoId,
@@ -246,7 +246,7 @@ public class AvisosController : Controller
                 return RedirectToAction(nameof(Detalles), new { id });
             }
 
-            if (!await _contexto.AvisosDestinatarios.AnyAsync(d => d.AvisoId == id))
+            if (!await _contexto.AvisoDestinatarios.AnyAsync(d => d.AvisoId == id))
             {
                 await transaccion.RollbackAsync();
                 TempData["Error"] = "El aviso no tiene destinatarios y no se puede enviar.";
@@ -263,12 +263,12 @@ public class AvisosController : Controller
             if (actualizados != 1)
             {
                 await transaccion.RollbackAsync();
-                TempData["Error"] = "El aviso ya fue enviado o cambiÛ de estado.";
+                TempData["Error"] = "El aviso ya fue enviado o cambi√≥ de estado.";
                 return RedirectToAction(nameof(Detalles), new { id });
             }
 
             await transaccion.CommitAsync();
-            TempData["Exito"] = "NotificaciÛn interna enviada a sus destinatarios.";
+            TempData["Exito"] = "Notificaci√≥n interna enviada a sus destinatarios.";
             return RedirectToAction(nameof(Detalles), new { id });
         }
         catch (Exception ex)
@@ -304,7 +304,7 @@ public class AvisosController : Controller
                 .Where(u => u.UsuarioId == aviso.UsuarioCreadorId)
                 .Select(u => u.NombreCompleto)
                 .FirstOrDefaultAsync() ?? "Usuario no disponible",
-            Destinatarios = await _contexto.AvisosDestinatarios.AsNoTracking()
+            Destinatarios = await _contexto.AvisoDestinatarios.AsNoTracking()
                 .Where(d => d.AvisoId == id)
                 .Join(_contexto.Usuarios, d => d.UsuarioId, u => u.UsuarioId, (d, u) => new { d, u })
                 .Select(x => new AvisoDestinatarioViewModel
@@ -314,7 +314,7 @@ public class AvisosController : Controller
                     CodigoClienteFrecuente = _contexto.Clientes
                         .Where(c => c.UsuarioId == x.u.UsuarioId)
                         .Select(c => c.CodigoClienteFrecuente)
-                        .FirstOrDefault() ?? "ó",
+                        .FirstOrDefault() ?? "¬ó",
                     FechaLectura = x.d.FechaLectura
                 })
                 .OrderBy(d => d.NombreCompleto)
@@ -380,7 +380,7 @@ public class AvisosController : Controller
             return Forbid();
         }
 
-        var avisos = await _contexto.AvisosDestinatarios.AsNoTracking()
+        var avisos = await _contexto.AvisoDestinatarios.AsNoTracking()
             .Where(d => d.UsuarioId == usuarioId.Value && d.Aviso.Estado == Enviado && d.Aviso.FechaEnvio != null)
             .OrderByDescending(d => d.Aviso.FechaEnvio)
             .Select(d => new AvisoBandejaViewModel
@@ -404,7 +404,7 @@ public class AvisosController : Controller
             return Forbid();
         }
 
-        var modelo = await _contexto.AvisosDestinatarios.AsNoTracking()
+        var modelo = await _contexto.AvisoDestinatarios.AsNoTracking()
             .Where(d => d.AvisoId == id && d.UsuarioId == usuarioId.Value && d.Aviso.Estado == Enviado)
             .Select(d => new AvisoBandejaDetalleViewModel
             {
@@ -435,7 +435,7 @@ public class AvisosController : Controller
             return Forbid();
         }
 
-        var esDestinatario = await _contexto.AvisosDestinatarios
+        var esDestinatario = await _contexto.AvisoDestinatarios
             .AnyAsync(d => d.AvisoId == id && d.UsuarioId == usuarioId.Value && d.Aviso.Estado == Enviado);
 
         if (!esDestinatario)
@@ -446,7 +446,7 @@ public class AvisosController : Controller
         try
         {
             var fechaLectura = DateTime.UtcNow;
-            await _contexto.AvisosDestinatarios
+            await _contexto.AvisoDestinatarios
                 .Where(d => d.AvisoId == id && d.UsuarioId == usuarioId.Value && d.FechaLectura == null)
                 .ExecuteUpdateAsync(actualizacion => actualizacion.SetProperty(d => d.FechaLectura, fechaLectura));
         }
@@ -457,7 +457,7 @@ public class AvisosController : Controller
             return RedirectToAction(nameof(MiDetalle), new { id });
         }
 
-        TempData["Exito"] = "Aviso marcado como leÌdo.";
+        TempData["Exito"] = "Aviso marcado como le√≠do.";
         return RedirectToAction(nameof(MiDetalle), new { id });
     }
 
@@ -465,7 +465,7 @@ public class AvisosController : Controller
     {
         if (!entrada.TodosClientesActivos && (entrada.ClienteIds == null || entrada.ClienteIds.Count == 0))
         {
-            ModelState.AddModelError(nameof(entrada.ClienteIds), "Selecciona uno o m·s destinatarios, o elige todos los clientes activos.");
+            ModelState.AddModelError(nameof(entrada.ClienteIds), "Selecciona uno o m√°s destinatarios, o elige todos los clientes activos.");
             return new List<int>();
         }
 
@@ -493,7 +493,7 @@ public class AvisosController : Controller
 
         if (seleccionados.Count != clienteIds.Count)
         {
-            ModelState.AddModelError(nameof(entrada.ClienteIds), "Uno o m·s clientes seleccionados ya no est·n activos o no existen.");
+            ModelState.AddModelError(nameof(entrada.ClienteIds), "Uno o m√°s clientes seleccionados ya no est√°n activos o no existen.");
         }
 
         return seleccionados.Select(c => c.UsuarioId).Distinct().ToList();

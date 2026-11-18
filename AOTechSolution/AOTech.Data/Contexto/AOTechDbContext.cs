@@ -16,6 +16,10 @@ public partial class AOTechDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Aviso> Avisos { get; set; }
+
+    public virtual DbSet<AvisoDestinatario> AvisoDestinatarios { get; set; }
+
     public virtual DbSet<CatalogoServicio> CatalogoServicios { get; set; }
 
     public virtual DbSet<Cita> Citas { get; set; }
@@ -63,11 +67,11 @@ public partial class AOTechDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263
 
-        => //optionsBuilder.UseSqlServer("Server=RXBUSHIDO;Database=AOTechBD;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=RXBUSHIDO;Database=AOTechBD;Trusted_Connection=True;TrustServerCertificate=True");
 
 
     //nathanael conexion
-    optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AOTechBD;Trusted_Connection=True;TrustServerCertificate=True");
+    //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AOTechBD;Trusted_Connection=True;TrustServerCertificate=True");
 
 
 
@@ -118,6 +122,23 @@ public partial class AOTechDbContext : DbContext
                 .HasForeignKey(d => d.VehiculoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Vehiculos");
+        });
+        modelBuilder.Entity<AvisoDestinatario>(entity =>
+        {
+            entity.HasKey(e => new { e.AvisoId, e.UsuarioId })
+                .HasName("PK_AvisoDestinatarios");
+
+            entity.ToTable("AvisoDestinatarios", "Comunicaciones");
+
+            entity.HasOne(d => d.Aviso)
+                .WithMany(a => a.Destinatarios)
+                .HasForeignKey(d => d.AvisoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Usuario)
+                .WithMany()
+                .HasForeignKey(d => d.UsuarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Cliente>(entity =>

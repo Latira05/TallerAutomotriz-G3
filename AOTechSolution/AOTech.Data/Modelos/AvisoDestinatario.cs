@@ -11,4 +11,6 @@ public partial class AvisoDestinatario
     public DateTime? FechaLectura { get; set; }
 
     public virtual Aviso Aviso { get; set; } = null!;
+
+    public virtual Usuario Usuario { get; set; } = null!;
 }
