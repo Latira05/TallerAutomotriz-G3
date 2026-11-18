@@ -1,6 +1,5 @@
 ﻿@{
     var controlador = ViewContext.RouteData.Values["controller"]?.ToString();
-    var puedeVerClientes = User?.IsInRole("Administrador") == true || User?.IsInRole("Recepcionista") == true;
     var esAdmin = User?.IsInRole("Administrador") == true;
     var esMecanico = User?.IsInRole("Mecanico") == true;
 
