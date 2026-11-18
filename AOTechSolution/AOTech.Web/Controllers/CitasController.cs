@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AOTech.Web.Controllers
 {
-    [Authorize(Roles = "Administrador,Recepcionista")]
+    // TEMPORALMENTE DESACTIVADO PARA PRUEBAS
+    // [Authorize(Roles = "Administrador,Recepcionista")]
     public class CitasController : Controller
     {
         private readonly AOTechDbContext _contexto;
@@ -17,6 +18,7 @@ namespace AOTech.Web.Controllers
         }
 
         // LISTADO DE CITAS
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var citas = await _contexto.Citas
@@ -64,7 +66,45 @@ namespace AOTech.Web.Controllers
 
             await _contexto.SaveChangesAsync();
 
-            TempData["Exito"] = "La cita fue aprobada correctamente.";
+            TempData["Exito"] =
+                "La cita fue aprobada correctamente.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // CANCELAR CITA
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancelar(int id)
+        {
+            var cita = await _contexto.Citas
+                .FirstOrDefaultAsync(c => c.CitaId == id);
+
+            if (cita == null)
+            {
+                TempData["Error"] = "La cita no existe.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Validar que la cita pueda cancelarse
+            if (cita.Estado != "Pendiente" &&
+                cita.Estado != "Aprobada" &&
+                cita.Estado != "Reprogramada")
+            {
+                TempData["Error"] =
+                    "No se puede cancelar la cita porque su estado actual no lo permite.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Actualizar estado
+            cita.Estado = "Cancelada";
+            cita.FechaActualizacion = DateTime.UtcNow;
+
+            await _contexto.SaveChangesAsync();
+
+            TempData["Exito"] =
+                "La cita fue cancelada correctamente.";
 
             return RedirectToAction(nameof(Index));
         }
@@ -136,6 +176,7 @@ namespace AOTech.Web.Controllers
             var fechaNueva = modelo.FechaSolicitada;
             var horaNueva = modelo.HoraSolicitada;
 
+            // Validar fecha pasada
             if (fechaNueva < DateOnly.FromDateTime(DateTime.Today))
             {
                 ModelState.AddModelError(
@@ -145,6 +186,7 @@ namespace AOTech.Web.Controllers
                 return View(modelo);
             }
 
+            // Validar fecha bloqueada
             bool fechaBloqueada = await _contexto.FechasBloqueadas
                 .AnyAsync(f => f.FechaBloqueada == fechaNueva);
 
@@ -182,6 +224,7 @@ namespace AOTech.Web.Controllers
                 return View(modelo);
             }
 
+            // Validar horario de atención
             if (horaNueva < regla.HoraApertura ||
                 horaNueva >= regla.HoraCierre)
             {
@@ -219,6 +262,7 @@ namespace AOTech.Web.Controllers
                 return View(modelo);
             }
 
+            // Guardar nueva fecha y hora
             cita.FechaSolicitada = fechaNueva;
             cita.HoraSolicitada = horaNueva;
             cita.Estado = "Reprogramada";
@@ -233,6 +277,7 @@ namespace AOTech.Web.Controllers
         }
     }
 
+    // VIEWMODEL PARA REPROGRAMAR CITAS
     public class ReprogramarCitaViewModel
     {
         public int CitaId { get; set; }

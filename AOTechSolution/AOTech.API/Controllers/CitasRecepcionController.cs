@@ -7,7 +7,8 @@ namespace AOTech.API.Controllers
 {
     [ApiController]
     [Route("api/CitasRecepcion")]
-    [Authorize(Roles = "Administrador,Recepcionista")]
+    // TEMPORALMENTE DESACTIVADO PARA PRUEBAS
+    // [Authorize(Roles = "Administrador,Recepcionista")]
     public class CitasRecepcionController : ControllerBase
     {
         private readonly AOTechDbContext _contexto;

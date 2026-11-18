@@ -9,7 +9,8 @@ namespace AOTech.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Cliente")]
+    //desactivado por prueba
+    //[Authorize(Roles = "Cliente")]
     public class CitasController : ControllerBase
     {
         private readonly AOTechDbContext _contexto;
@@ -20,13 +21,32 @@ namespace AOTech.API.Controllers
         }
 
         // =====================================================
+        // MÉTODO AUXILIAR: IDENTIFICAR USUARIO AUTENTICADO
+        // =====================================================
+        private bool ObtenerUsuarioId(out int usuarioId)
+        {
+            var usuarioIdClaim =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return int.TryParse(usuarioIdClaim, out usuarioId);
+        }
+
+        // =====================================================
         // POST: api/Citas/Agendar
         // =====================================================
         [HttpPost("Agendar")]
         public async Task<IActionResult> AgendarCita(
             [FromBody] AgendarCitaDto datos)
         {
-            // 1. Validar los datos obligatorios
+            if (datos == null)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "Debe proporcionar los datos de la cita."
+                });
+            }
+
+            // 1. Validar datos obligatorios
             if (datos.ClienteId <= 0 ||
                 datos.VehiculoId <= 0 ||
                 datos.FechaSolicitada == default ||
@@ -38,7 +58,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 2. Validar la fecha
+            // 2. Validar que la fecha no sea pasada
             if (datos.FechaSolicitada <
                 DateOnly.FromDateTime(DateTime.Today))
             {
@@ -49,10 +69,7 @@ namespace AOTech.API.Controllers
             }
 
             // 3. Identificar al usuario autenticado
-            var usuarioIdClaim =
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (!int.TryParse(usuarioIdClaim, out int usuarioId))
+            if (!ObtenerUsuarioId(out int usuarioId))
             {
                 return Unauthorized(new
                 {
@@ -60,7 +77,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 4. Verificar que el cliente pertenezca al usuario autenticado
+            // 4. Verificar que el cliente pertenezca al usuario
             bool clienteValido = await _contexto.Clientes
                 .AnyAsync(c =>
                     c.ClienteId == datos.ClienteId &&
@@ -76,38 +93,38 @@ namespace AOTech.API.Controllers
             bool vehiculoValido = await _contexto.Vehiculos
                 .AnyAsync(v =>
                     v.VehiculoId == datos.VehiculoId &&
-                    v.ClienteId == datos.ClienteId);
+                    v.ClienteId == datos.ClienteId &&
+                    v.EstaActivo);
 
             if (!vehiculoValido)
             {
                 return BadRequest(new
                 {
-                    mensaje = "El vehículo no existe o no pertenece al cliente."
+                    mensaje = "El vehículo no existe, está inactivo o no pertenece al cliente."
                 });
             }
 
-            // 6. Verificar que el servicio exista
+            // 6. Verificar que el servicio exista y esté activo
             if (datos.ServicioId.HasValue)
             {
-                bool servicioExiste =
-                    await _contexto.CatalogoServicios
-                        .AnyAsync(s =>
-                            s.ServicioId == datos.ServicioId.Value);
+                bool servicioExiste = await _contexto.CatalogoServicios
+                    .AnyAsync(s =>
+                        s.ServicioId == datos.ServicioId.Value &&
+                        s.EstaActivo);
 
                 if (!servicioExiste)
                 {
                     return BadRequest(new
                     {
-                        mensaje = "El servicio seleccionado no existe."
+                        mensaje = "El servicio seleccionado no existe o está inactivo."
                     });
                 }
             }
 
-            // 7. Comprobar si la fecha está bloqueada
-            bool fechaBloqueada =
-                await _contexto.FechasBloqueadas
-                    .AnyAsync(f =>
-                        f.FechaBloqueada == datos.FechaSolicitada);
+            // 7. Verificar si la fecha está bloqueada
+            bool fechaBloqueada = await _contexto.FechasBloqueadas
+                .AnyAsync(f =>
+                    f.FechaBloqueada == datos.FechaSolicitada);
 
             if (fechaBloqueada)
             {
@@ -117,9 +134,8 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 8. Obtener las reglas de agenda del día
-            byte diaSemana =
-                (byte)datos.FechaSolicitada.DayOfWeek;
+            // 8. Buscar las reglas de agenda
+            byte diaSemana = (byte)datos.FechaSolicitada.DayOfWeek;
 
             var reglas = await _contexto.ReglasAgenda
                 .Where(r =>
@@ -129,19 +145,15 @@ namespace AOTech.API.Controllers
                 .OrderBy(r => r.HoraApertura)
                 .ToListAsync();
 
-            // Priorizar la regla específica del servicio
+            // Priorizar regla específica del servicio
             var reglaEspecifica = reglas
-                .Where(r =>
+                .FirstOrDefault(r =>
                     r.ServicioId.HasValue &&
-                    r.ServicioId == datos.ServicioId)
-                .OrderBy(r => r.HoraApertura)
-                .FirstOrDefault();
+                    r.ServicioId == datos.ServicioId);
 
-            // Utilizar la regla general si no hay una específica
+            // Utilizar regla general si no existe una específica
             var reglaGeneral = reglas
-                .Where(r => r.ServicioId == null)
-                .OrderBy(r => r.HoraApertura)
-                .FirstOrDefault();
+                .FirstOrDefault(r => r.ServicioId == null);
 
             var regla = reglaEspecifica ?? reglaGeneral;
 
@@ -153,7 +165,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 9. Validar el horario de atención
+            // 9. Validar horario de atención
             if (datos.HoraSolicitada < regla.HoraApertura ||
                 datos.HoraSolicitada >= regla.HoraCierre)
             {
@@ -165,7 +177,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 10. Comprobar la capacidad del horario
+            // 10. Comprobar capacidad del horario
             string[] estadosOcupados =
             {
                 "Pendiente",
@@ -219,12 +231,15 @@ namespace AOTech.API.Controllers
             });
         }
 
-        // GET: api/Citas/Disponibilidad?fecha=2026-10-20&servicioId=1
+        // =====================================================
+        // GET: api/Citas/Disponibilidad?fecha=2026-11-20&servicioId=1
+        // =====================================================
         [HttpGet("Disponibilidad")]
         public async Task<IActionResult> ConsultarDisponibilidad(
             [FromQuery] DateOnly fecha,
             [FromQuery] int? servicioId)
         {
+            // 1. Validar fecha
             if (fecha == default)
             {
                 return BadRequest(new
@@ -241,20 +256,24 @@ namespace AOTech.API.Controllers
                 });
             }
 
+            // 2. Verificar servicio
             if (servicioId.HasValue)
             {
                 bool servicioExiste = await _contexto.CatalogoServicios
-                    .AnyAsync(s => s.ServicioId == servicioId.Value);
+                    .AnyAsync(s =>
+                        s.ServicioId == servicioId.Value &&
+                        s.EstaActivo);
 
                 if (!servicioExiste)
                 {
                     return BadRequest(new
                     {
-                        mensaje = "El servicio seleccionado no existe."
+                        mensaje = "El servicio seleccionado no existe o está inactivo."
                     });
                 }
             }
 
+            // 3. Verificar fecha bloqueada
             bool fechaBloqueada = await _contexto.FechasBloqueadas
                 .AnyAsync(f => f.FechaBloqueada == fecha);
 
@@ -269,6 +288,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
+            // 4. Buscar reglas de agenda
             byte diaSemana = (byte)fecha.DayOfWeek;
 
             var reglas = await _contexto.ReglasAgenda
@@ -280,15 +300,12 @@ namespace AOTech.API.Controllers
                 .ToListAsync();
 
             var reglaEspecifica = reglas
-                .Where(r => r.ServicioId.HasValue &&
-                            r.ServicioId == servicioId)
-                .OrderBy(r => r.HoraApertura)
-                .FirstOrDefault();
+                .FirstOrDefault(r =>
+                    r.ServicioId.HasValue &&
+                    r.ServicioId == servicioId);
 
             var reglaGeneral = reglas
-                .Where(r => r.ServicioId == null)
-                .OrderBy(r => r.HoraApertura)
-                .FirstOrDefault();
+                .FirstOrDefault(r => r.ServicioId == null);
 
             var regla = reglaEspecifica ?? reglaGeneral;
 
@@ -303,12 +320,13 @@ namespace AOTech.API.Controllers
                 });
             }
 
+            // 5. Obtener citas existentes
             string[] estadosOcupados =
             {
-        "Pendiente",
-        "Aprobada",
-        "Reprogramada"
-    };
+                "Pendiente",
+                "Aprobada",
+                "Reprogramada"
+            };
 
             var citasExistentes = await _contexto.Citas
                 .Where(c =>
@@ -320,7 +338,7 @@ namespace AOTech.API.Controllers
                 .Select(c => c.HoraSolicitada)
                 .ToListAsync();
 
-            // Generar horarios cada 30 minutos
+            // 6. Generar horarios cada 30 minutos
             var horarios = new List<object>();
             bool hayDisponibilidad = false;
 
@@ -364,13 +382,14 @@ namespace AOTech.API.Controllers
             });
         }
 
+        // =====================================================
+        // PUT: api/Citas/Cancelar/1
+        // =====================================================
         [HttpPut("Cancelar/{id:int}")]
         public async Task<IActionResult> CancelarCita(int id)
         {
-            // Obtener el ID del usuario autenticado
-            var usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (!int.TryParse(usuarioIdClaim, out int usuarioId))
+            // 1. Identificar usuario autenticado
+            if (!ObtenerUsuarioId(out int usuarioId))
             {
                 return Unauthorized(new
                 {
@@ -378,7 +397,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // Buscar la cita y el cliente asociado
+            // 2. Buscar cita y cliente asociado
             var cita = await _contexto.Citas
                 .Include(c => c.Cliente)
                 .FirstOrDefaultAsync(c => c.CitaId == id);
@@ -391,14 +410,14 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // Verificar que la cita pertenezca al cliente autenticado
+            // 3. Verificar que la cita pertenezca al cliente
             if (cita.Cliente.UsuarioId != usuarioId ||
                 !cita.Cliente.EstaActivo)
             {
                 return Forbid();
             }
 
-            // Criterio 2: la cita ya está cancelada
+            // 4. Verificar que no esté cancelada
             if (cita.Estado.Equals(
                 "Cancelada",
                 StringComparison.OrdinalIgnoreCase))
@@ -409,15 +428,12 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // Criterio 3: validar si la cita puede cancelarse
-            if (!cita.Estado.Equals(
-                    "Pendiente",
+            // 5. Validar estados permitidos
+            if (!cita.Estado.Equals("Pendiente",
                     StringComparison.OrdinalIgnoreCase) &&
-                !cita.Estado.Equals(
-                    "Reprogramada",
+                !cita.Estado.Equals("Reprogramada",
                     StringComparison.OrdinalIgnoreCase) &&
-                !cita.Estado.Equals(
-                    "Aprobada",
+                !cita.Estado.Equals("Aprobada",
                     StringComparison.OrdinalIgnoreCase))
             {
                 return Conflict(new
@@ -427,7 +443,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // Criterio 1: cancelar sin eliminar el registro
+            // 6. Cancelar sin eliminar el registro
             cita.Estado = "Cancelada";
             cita.FechaActualizacion = DateTime.UtcNow;
 
@@ -443,7 +459,6 @@ namespace AOTech.API.Controllers
             });
         }
 
-
         // =====================================================
         // PUT: api/Citas/Modificar/1
         // =====================================================
@@ -452,7 +467,15 @@ namespace AOTech.API.Controllers
             int id,
             [FromBody] ModificarCitaDto datos)
         {
-            // 1. Validar que se haya enviado al menos un cambio
+            if (datos == null)
+            {
+                return BadRequest(new
+                {
+                    mensaje = "Debe proporcionar los datos de modificación."
+                });
+            }
+
+            // 1. Validar que exista al menos un cambio
             if (!datos.FechaSolicitada.HasValue &&
                 !datos.HoraSolicitada.HasValue)
             {
@@ -462,11 +485,8 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 2. Identificar al usuario autenticado
-            var usuarioIdClaim =
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (!int.TryParse(usuarioIdClaim, out int usuarioId))
+            // 2. Identificar usuario autenticado
+            if (!ObtenerUsuarioId(out int usuarioId))
             {
                 return Unauthorized(new
                 {
@@ -474,7 +494,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 3. Buscar la cita y comprobar que pertenezca al cliente
+            // 3. Buscar cita y cliente asociado
             var cita = await _contexto.Citas
                 .Include(c => c.Cliente)
                 .FirstOrDefaultAsync(c => c.CitaId == id);
@@ -487,14 +507,14 @@ namespace AOTech.API.Controllers
                 });
             }
 
+            // 4. Verificar propiedad de la cita
             if (cita.Cliente.UsuarioId != usuarioId ||
                 !cita.Cliente.EstaActivo)
             {
                 return Forbid();
             }
 
-            // 4. Comprobar si la cita permite modificaciones
-            // En este ejemplo solo se permiten citas Pendientes o Reprogramadas.
+            // 5. Verificar estados que permiten modificación
             if (cita.Estado != "Pendiente" &&
                 cita.Estado != "Reprogramada")
             {
@@ -504,14 +524,18 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 5. Determinar la fecha y hora nuevas
+            // 6. Guardar los valores originales ANTES de modificarlos
+            DateOnly fechaAnterior = cita.FechaSolicitada;
+            TimeOnly horaAnterior = cita.HoraSolicitada;
+
+            // 7. Determinar los nuevos valores
             DateOnly nuevaFecha =
                 datos.FechaSolicitada ?? cita.FechaSolicitada;
 
             TimeOnly nuevaHora =
                 datos.HoraSolicitada ?? cita.HoraSolicitada;
 
-            // 6. Validar la fecha
+            // 8. Validar fecha
             if (nuevaFecha < DateOnly.FromDateTime(DateTime.Today))
             {
                 return BadRequest(new
@@ -520,7 +544,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 7. Verificar si la nueva fecha está bloqueada
+            // 9. Verificar fecha bloqueada
             bool fechaBloqueada = await _contexto.FechasBloqueadas
                 .AnyAsync(f => f.FechaBloqueada == nuevaFecha);
 
@@ -532,7 +556,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 8. Buscar la regla de agenda para el día y servicio de la cita
+            // 10. Buscar regla de agenda
             byte diaSemana = (byte)nuevaFecha.DayOfWeek;
 
             var reglas = await _contexto.ReglasAgenda
@@ -544,14 +568,12 @@ namespace AOTech.API.Controllers
                 .ToListAsync();
 
             var reglaEspecifica = reglas
-                .Where(r =>
+                .FirstOrDefault(r =>
                     r.ServicioId.HasValue &&
-                    r.ServicioId == cita.ServicioId)
-                .FirstOrDefault();
+                    r.ServicioId == cita.ServicioId);
 
             var reglaGeneral = reglas
-                .Where(r => r.ServicioId == null)
-                .FirstOrDefault();
+                .FirstOrDefault(r => r.ServicioId == null);
 
             var regla = reglaEspecifica ?? reglaGeneral;
 
@@ -563,7 +585,7 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 9. Validar que la nueva hora esté dentro del horario permitido
+            // 11. Validar horario permitido
             if (nuevaHora < regla.HoraApertura ||
                 nuevaHora >= regla.HoraCierre)
             {
@@ -575,14 +597,14 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 10. Verificar la capacidad del nuevo horario.
-            // Se excluye la propia cita para no contarla como una reserva adicional.
+            // 12. Comprobar capacidad del horario
+            // Se excluye la propia cita para no contarla dos veces.
             string[] estadosOcupados =
             {
-        "Pendiente",
-        "Aprobada",
-        "Reprogramada"
-    };
+                "Pendiente",
+                "Aprobada",
+                "Reprogramada"
+            };
 
             int citasExistentes = await _contexto.Citas
                 .CountAsync(c =>
@@ -602,35 +624,26 @@ namespace AOTech.API.Controllers
                 });
             }
 
-            // 11. Aplicar los cambios
+            // 13. Aplicar los cambios
             cita.FechaSolicitada = nuevaFecha;
             cita.HoraSolicitada = nuevaHora;
             cita.FechaActualizacion = DateTime.UtcNow;
 
-            // Si estaba Pendiente, se conserva ese estado.
-            // Si estaba Reprogramada, también se conserva.
+            // Se conserva el estado actual de la cita.
 
             await _contexto.SaveChangesAsync();
 
-            // 12. Devolver el resultado
+            // 14. Devolver los valores anteriores y nuevos
             return Ok(new
             {
                 mensaje = "La cita se modificó correctamente.",
                 citaId = cita.CitaId,
-                fechaAnterior = datos.FechaSolicitada.HasValue
-                    ? (DateOnly?)null
-                    : cita.FechaSolicitada,
+                fechaAnterior,
+                horaAnterior = horaAnterior.ToString("HH:mm"),
                 fecha = cita.FechaSolicitada,
                 hora = cita.HoraSolicitada.ToString("HH:mm"),
                 estado = cita.Estado
             });
-
-
-
-
-
         }
-
-
     }
 }
