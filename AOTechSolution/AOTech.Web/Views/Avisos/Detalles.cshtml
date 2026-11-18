@@ -1,0 +1,92 @@
+@model AOTech.Web.Models.AvisoDetalleViewModel
+
+@{
+    ViewData["Title"] = "Detalle del aviso";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>@Model.Titulo</h1>
+            <p>
+                @if (Model.Estado == "Enviado")
+                {
+                    <span class="pastilla pastilla--activo">Enviado internamente</span>
+                }
+                else
+                {
+                    <span class="pastilla pastilla--proceso">Borrador</span>
+                }
+            </p>
+        </div>
+        <div class="celda-acciones">
+            @if (Model.Estado == "Borrador")
+            {
+                <a asp-action="Editar" asp-route-id="@Model.AvisoId" class="btn btn--fantasma">Editar</a>
+                <form asp-action="Enviar" asp-route-id="@Model.AvisoId" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn--primario">Enviar aviso interno</button>
+                </form>
+            }
+            <a asp-action="Index" class="btn btn--fantasma">Volver</a>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="form-card form-card--ancho">
+        <p>@Model.Mensaje</p>
+        <dl class="ficha__cuerpo">
+            <div class="ficha__fila"><dt>Creado por</dt><dd>@Model.NombreCreador</dd></div>
+            <div class="ficha__fila"><dt>Fecha de creación</dt><dd>@Model.FechaCreacion.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
+            @if (Model.FechaEnvio.HasValue)
+            {
+                <div class="ficha__fila"><dt>Fecha de envío</dt><dd>@Model.FechaEnvio.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</dd></div>
+            }
+            <div class="ficha__fila"><dt>Destinatarios</dt><dd>@Model.CantidadDestinatarios</dd></div>
+            <div class="ficha__fila"><dt>Leídos</dt><dd>@Model.CantidadLeidos / @Model.CantidadDestinatarios</dd></div>
+        </dl>
+
+        <h2 class="form-subtitulo form-subtitulo--sep">Destinatarios y lectura</h2>
+        <div class="tabla-wrap">
+            @if (Model.Destinatarios.Count == 0)
+            {
+                <div class="tabla-vacia"><strong>Sin destinatarios</strong></div>
+            }
+            else
+            {
+                <table class="tabla">
+                    <thead>
+                        <tr><th>Cliente</th><th>Código</th><th>Lectura</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var destinatario in Model.Destinatarios)
+                        {
+                            <tr>
+                                <td>@destinatario.NombreCompleto</td>
+                                <td class="celda-mono">@destinatario.CodigoClienteFrecuente</td>
+                                <td>
+                                    @if (destinatario.FechaLectura.HasValue)
+                                    {
+                                        <span>Leído @destinatario.FechaLectura.Value.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Pendiente de lectura</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>

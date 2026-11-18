@@ -1,0 +1,77 @@
+@model AOTech.Web.Models.VehiculoEditarViewModel
+
+@{
+    ViewData["Title"] = "Editar vehículo";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Editar vehículo</h1>
+            <p>Actualiza la información del vehículo y su cliente propietario.</p>
+        </div>
+    </div>
+
+    <div class="form-card form-card--ancho">
+        <form asp-action="Editar" method="post">
+            <input type="hidden" asp-for="VehiculoId" />
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="ClienteId"></label>
+                <select asp-for="ClienteId">
+                    @foreach (var cliente in Model.ClientesDisponibles)
+                    {
+                        <option value="@cliente.ClienteId">@cliente.NombreCompleto — @cliente.CodigoClienteFrecuente</option>
+                    }
+                </select>
+                <span asp-validation-for="ClienteId" class="validacion"></span>
+            </div>
+
+            <div class="campos-dos">
+                <div class="campo">
+                    <label asp-for="Placa"></label>
+                    <input asp-for="Placa" autocomplete="off" />
+                    <span asp-validation-for="Placa" class="validacion"></span>
+                </div>
+
+                <div class="campo">
+                    <label asp-for="Marca"></label>
+                    <input asp-for="Marca" autocomplete="off" />
+                    <span asp-validation-for="Marca" class="validacion"></span>
+                </div>
+            </div>
+
+            <div class="campos-dos">
+                <div class="campo">
+                    <label asp-for="Modelo"></label>
+                    <input asp-for="Modelo" autocomplete="off" />
+                    <span asp-validation-for="Modelo" class="validacion"></span>
+                </div>
+
+                <div class="campo">
+                    <label asp-for="Anio"></label>
+                    <input asp-for="Anio" type="number" />
+                    <span asp-validation-for="Anio" class="validacion"></span>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Kilometraje"></label>
+                <input asp-for="Kilometraje" type="number" min="0" />
+                <span asp-validation-for="Kilometraje" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

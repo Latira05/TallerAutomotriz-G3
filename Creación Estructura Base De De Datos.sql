@@ -1,11 +1,11 @@
 /* ============================================================================
-   Script de creaci髇 de base de datos - Taller A.O Tech
+   Script de creaci贸n de base de datos - Taller A.O Tech
    Motor: SQL Server
    Convenciones:
-     - Nombres de base de datos, esquemas, tablas y columnas en espa駉l
-     - Esquemas por m骴ulo para orden y seguridad de permisos
-     - Baja l骻ica (EstaActivo) en cat醠ogos maestros, nunca DELETE f韘ico
-     - Campos de auditor韆 (FechaCreacion/FechaActualizacion) en tablas transaccionales
+     - Nombres de base de datos, esquemas, tablas y columnas en espa帽ol
+     - Esquemas por m贸dulo para orden y seguridad de permisos
+     - Baja l贸gica (EstaActivo) en cat谩logos maestros, nunca DELETE f铆sico
+     - Campos de auditor铆a (FechaCreacion/FechaActualizacion) en tablas transaccionales
    ============================================================================ */
 
 IF DB_ID(N'AOTechBD') IS NULL
@@ -18,7 +18,7 @@ USE AOTechBD;
 GO
 
 /* ============================================================================
-   1. ESQUEMAS (uno por m骴ulo, para separar permisos y mantener orden)
+   1. ESQUEMAS (uno por m贸dulo, para separar permisos y mantener orden)
    ============================================================================ */
 CREATE SCHEMA Seguridad AUTHORIZATION dbo;
 GO
@@ -36,7 +36,7 @@ CREATE SCHEMA Encuestas AUTHORIZATION dbo;
 GO
 
 /* ============================================================================
-   2. SEGURIDAD: Roles, Usuarios, recuperaci髇 de contrase馻
+   2. SEGURIDAD: Roles, Usuarios, recuperaci贸n de contrase帽a
    ============================================================================ */
 CREATE TABLE Seguridad.Roles (
     RolId               INT IDENTITY(1,1)  NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Seguridad.TokensRecuperacionContrasena (
 GO
 
 /* ============================================================================
-   3. CLIENTES: Clientes, Veh韈ulos, Membres韆s / Cartera (c骴igo BP)
+   3. CLIENTES: Clientes, Veh铆culos, Membres铆as / Cartera (c贸digo BP)
    ============================================================================ */
 CREATE TABLE Clientes.Clientes (
     ClienteId               INT IDENTITY(1,1)  NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE Clientes.PagosMembresia (
 GO
 
 /* ============================================================================
-   4. SERVICIOS: Cat醠ogo, 髍denes de servicio, detalle, pagos
+   4. SERVICIOS: Cat谩logo, 贸rdenes de servicio, detalle, pagos
    ============================================================================ */
 CREATE TABLE Servicios.CatalogoServicios (
     ServicioId                  INT IDENTITY(1,1)  NOT NULL,
@@ -301,7 +301,7 @@ CREATE TABLE Inventario.MovimientosInventario (
 GO
 
 /* ============================================================================
-   7. CURSOS: Cat醠ogo de cursos, videos, compras (paywall)
+   7. CURSOS: Cat谩logo de cursos, videos, compras (paywall)
    ============================================================================ */
 CREATE TABLE Cursos.Cursos (
     CursoId         INT IDENTITY(1,1)  NOT NULL,
@@ -341,7 +341,7 @@ CREATE TABLE Cursos.ComprasVideo (
 GO
 
 /* ============================================================================
-   8. ENCUESTAS: Encuestas de satisfacci髇 y respuestas
+   8. ENCUESTAS: Encuestas de satisfacci贸n y respuestas
    ============================================================================ */
 CREATE TABLE Encuestas.Encuestas (
     EncuestaId          INT IDENTITY(1,1)  NOT NULL,
@@ -371,7 +371,7 @@ CREATE TABLE Encuestas.RespuestasEncuesta (
 GO
 
 /* ============================================================================
-   9. 蚇DICES ADICIONALES sobre llaves for醤eas (mejoran JOINs y filtros)
+   9. 脥NDICES ADICIONALES sobre llaves for谩neas (mejoran JOINs y filtros)
    ============================================================================ */
 CREATE INDEX IX_Usuarios_RolId ON Seguridad.Usuarios (RolId);
 CREATE INDEX IX_Vehiculos_ClienteId ON Clientes.Vehiculos (ClienteId);
@@ -392,7 +392,7 @@ GO
 
 /* ============================================================================
    10. VISTA: Estado de cuenta / saldo por cliente
-       (cargos de 髍denes finalizadas vs. pagos validados)
+       (cargos de 贸rdenes finalizadas vs. pagos validados)
    ============================================================================ */
 CREATE VIEW Servicios.vw_SaldoCuentaCliente AS
 SELECT
@@ -416,13 +416,13 @@ LEFT JOIN (
 GO
 
 /* ============================================================================
-   11. DATOS SEMILLA M蚇IMOS (roles base del sistema)
+   11. DATOS SEMILLA M脥NIMOS (roles base del sistema)
    ============================================================================ */
 INSERT INTO Seguridad.Roles (NombreRol, Descripcion) VALUES
     (N'Administrador', N'Control total del sistema'),
-    (N'Recepcionista', N'Gesti髇 de clientes, veh韈ulos, citas y 髍denes'),
-    (N'Mecanico', N'Ejecuci髇 y actualizaci髇 de 髍denes de servicio e inventario'),
-    (N'Cliente', N'Acceso a su informaci髇, citas, pagos y cursos');
+    (N'Recepcionista', N'Gesti贸n de clientes, veh铆culos, citas y 贸rdenes'),
+    (N'Mecanico', N'Ejecuci贸n y actualizaci贸n de 贸rdenes de servicio e inventario'),
+    (N'Cliente', N'Acceso a su informaci贸n, citas, pagos y cursos');
 GO
 
 --Prueba modulo repuestos--
@@ -436,3 +436,159 @@ VALUES (@ClienteId, 'PRUEBA-001', 'Toyota', 'Hilux', 2020, 45000);
 
 INSERT INTO Servicios.OrdenesServicio (VehiculoId, ClienteId, RecepcionistaUsuarioId, Estado, Descripcion)
 VALUES (SCOPE_IDENTITY(), @ClienteId, @UsuarioId, 'Abierta', 'Orden de prueba para inventario');
+
+USE AOTechBD;
+
+INSERT INTO Seguridad.Usuarios
+(
+   RolId,
+   NombreUsuario,
+   Correo,
+   ContrasenaHash,
+   ContrasenaSalt,
+   NombreCompleto,
+   EstaActivo
+)
+VALUES
+(
+   1,
+   'admin',
+   'admin@aotech.com',
+   HASHBYTES('SHA2_256', 'Admin123'),
+   CONVERT(VARBINARY(128), 'SaltAdmin'),
+   'Administrador del Sistema',
+   1
+),
+(
+   2,
+   'recepcion',
+   'recepcion@aotech.com',
+   HASHBYTES('SHA2_256', 'Recepcion123'),
+   CONVERT(VARBINARY(128), 'SaltRecepcion'),
+   'Mar铆a Recepci贸n',
+   1
+),
+(
+   3,
+   'mecanico',
+   'mecanico@aotech.com',
+   HASHBYTES('SHA2_256', 'Mecanico123'),
+   CONVERT(VARBINARY(128), 'SaltMecanico'),
+   'Juan Mec谩nico',
+   1
+),
+(
+   4,
+   'cliente',
+   'cliente@aotech.com',
+   HASHBYTES('SHA2_256', 'Cliente123'),
+   CONVERT(VARBINARY(128), 'SaltCliente'),
+   'Pedro Cliente',
+   1
+);
+
+SELECT * FROM Seguridad.Usuarios;
+
+SELECT @@SERVERNAME AS Servidor;
+SELECT DB_NAME() AS BaseDatosActual;
+
+
+USE AOTechBD;
+GO
+
+-- =============================================
+-- MODULO: COMUNICACIONES Y AVISOS CORRER PARA QUE TODO FUNCIONE
+-- =============================================
+
+-- Crear esquema si no existe
+IF NOT EXISTS (
+    SELECT 1 FROM sys.schemas
+    WHERE name = 'Comunicaciones'
+)
+BEGIN
+    EXEC('CREATE SCHEMA Comunicaciones');
+END;
+GO
+
+-- Tabla de avisos
+IF OBJECT_ID('Comunicaciones.Avisos', 'U') IS NULL
+BEGIN
+    CREATE TABLE Comunicaciones.Avisos (
+        AvisoId INT IDENTITY(1,1) NOT NULL,
+        Titulo NVARCHAR(150) NOT NULL,
+        Mensaje NVARCHAR(MAX) NOT NULL,
+        UsuarioCreadorId INT NOT NULL,
+        FechaCreacion DATETIME2 NOT NULL,
+        Estado NVARCHAR(20) NOT NULL
+            CONSTRAINT DF_Avisos_Estado DEFAULT N'Borrador',
+        FechaEnvio DATETIME2 NULL,
+
+        CONSTRAINT PK_Avisos
+            PRIMARY KEY (AvisoId),
+
+        CONSTRAINT CK_Avisos_Estado
+            CHECK (Estado IN (N'Borrador', N'Enviado')),
+
+        CONSTRAINT FK_Avisos_Usuarios_Creador
+            FOREIGN KEY (UsuarioCreadorId)
+            REFERENCES Seguridad.Usuarios(UsuarioId)
+    );
+END;
+GO
+
+-- Tabla de destinatarios
+IF OBJECT_ID('Comunicaciones.AvisoDestinatarios', 'U') IS NULL
+BEGIN
+    CREATE TABLE Comunicaciones.AvisoDestinatarios (
+        AvisoId INT NOT NULL,
+        UsuarioId INT NOT NULL,
+        FechaLectura DATETIME2 NULL,
+
+        CONSTRAINT PK_AvisoDestinatarios
+            PRIMARY KEY (AvisoId, UsuarioId),
+
+        CONSTRAINT FK_AvisoDestinatarios_Avisos
+            FOREIGN KEY (AvisoId)
+            REFERENCES Comunicaciones.Avisos(AvisoId)
+            ON DELETE CASCADE,
+
+        CONSTRAINT FK_AvisoDestinatarios_Usuarios
+            FOREIGN KEY (UsuarioId)
+            REFERENCES Seguridad.Usuarios(UsuarioId)
+    );
+END;
+GO
+
+-- 脥ndices
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_Avisos_UsuarioCreadorId'
+      AND object_id = OBJECT_ID('Comunicaciones.Avisos')
+)
+BEGIN
+    CREATE INDEX IX_Avisos_UsuarioCreadorId
+    ON Comunicaciones.Avisos(UsuarioCreadorId);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_Avisos_Estado_FechaCreacion'
+      AND object_id = OBJECT_ID('Comunicaciones.Avisos')
+)
+BEGIN
+    CREATE INDEX IX_Avisos_Estado_FechaCreacion
+    ON Comunicaciones.Avisos(Estado, FechaCreacion);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.indexes
+    WHERE name = 'IX_AvisoDestinatarios_UsuarioId_FechaLectura'
+      AND object_id = OBJECT_ID('Comunicaciones.AvisoDestinatarios')
+)
+BEGIN
+    CREATE INDEX IX_AvisoDestinatarios_UsuarioId_FechaLectura
+    ON Comunicaciones.AvisoDestinatarios(UsuarioId, FechaLectura);
+END;
+GO
