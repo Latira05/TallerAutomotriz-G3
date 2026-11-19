@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Estado de cuenta";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Mi estado de cuenta</h2>
+        <p class="text-muted">
+            Consulta tus cargos, pagos aplicados y saldos pendientes.
+        </p>
+    </div>
+
+    <!-- Mensajes -->
+    <div id="mensajeEstadoCuenta" class="mb-3" aria-live="polite"></div>
+
+    <!-- Resumen financiero -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total de cargos</p>
+                    <h3 class="fw-bold text-primary" id="totalCargos">₡0.00</h3>
+                    <small class="text-muted">Órdenes finalizadas</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Pagos aplicados</p>
+                    <h3 class="fw-bold text-success" id="totalPagado">₡0.00</h3>
+                    <small class="text-muted">Pagos validados</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Saldo pendiente</p>
+                    <h3 class="fw-bold text-danger" id="saldoPendiente">₡0.00</h3>
+                    <small class="text-muted">Monto por cancelar</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Detalle de cuenta -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Detalle de órdenes de servicio</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Orden de servicio</th>
+                            <th>Fecha</th>
+                            <th>Monto total</th>
+                            <th>Pagos aplicados</th>
+                            <th>Saldo pendiente</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaOrdenes">
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No hay información disponible para mostrar.
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="text-end mt-3">
+                <strong>Total pendiente: </strong>
+                <span class="text-danger fw-bold" id="totalPendienteDetalle">
+                    ₡0.00
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+</div>

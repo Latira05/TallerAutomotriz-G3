@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Reporte de pagos";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Reporte de pagos</h2>
+        <p class="text-muted">
+            Consulta tus órdenes de servicio y reporta los pagos realizados.
+        </p>
+    </div>
+
+    <!-- Resumen de la cuenta -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Órdenes pendientes de pago</p>
+                    <h3 class="fw-bold text-primary">2</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total pendiente</p>
+                    <h3 class="fw-bold text-danger">₡150,000.00</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pagos reportados</p>
+                    <h3 class="fw-bold text-warning">1</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Órdenes de servicio -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Mis órdenes de servicio</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Orden</th>
+                            <th>Fecha</th>
+                            <th>Monto total</th>
+                            <th>Pagado</th>
+                            <th>Saldo pendiente</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1001</td>
+                            <td>15/10/2026</td>
+                            <td>₡100,000.00</td>
+                            <td>₡50,000.00</td>
+                            <td class="text-danger fw-bold">₡50,000.00</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"
+                                        type="button"
+                                        onclick="seleccionarOrden(1001, 50000)">
+                                    Reportar pago
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#1002</td>
+                            <td>20/10/2026</td>
+                            <td>₡100,000.00</td>
+                            <td>₡0.00</td>
+                            <td class="text-danger fw-bold">₡100,000.00</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"
+                                        type="button"
+                                        onclick="seleccionarOrden(1002, 100000)">
+                                    Reportar pago
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de reporte -->
+    <div class="card shadow-sm border-0 mb-4" id="formularioPago">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Reportar un pago</h5>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Orden de servicio</label>
+                        <select id="ordenServicio" class="form-select">
+                            <option value="">Seleccione una orden</option>
+                            <option value="1001">Orden #1001</option>
+                            <option value="1002">Orden #1002</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Monto del pago (₡)</label>
+                        <input id="montoPago" type="number"
+                               class="form-control"
+                               min="1"
+                               placeholder="Ingrese el monto">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Método de pago</label>
+                        <select class="form-select">
+                            <option value="">Seleccione un método</option>
+                            <option>Transferencia bancaria</option>
+                            <option>Depósito bancario</option>
+                            <option>Tarjeta</option>
+                            <option>Efectivo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Comprobante de pago</label>
+                        <input type="file" class="form-control"
+                               accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary px-4">
+                        Reportar pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        function seleccionarOrden(id, saldo) {
+            document.getElementById("ordenServicio").value = id;
+            document.getElementById("montoPago").max = saldo;
+            document.getElementById("formularioPago").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    </script>
+}

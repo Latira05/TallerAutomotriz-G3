@@ -1,0 +1,183 @@
+﻿@{
+    ViewData["Title"] = "Validación de pagos";
+}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Validación de pagos</h2>
+        <p class="text-muted">
+            Revisa los pagos reportados por los clientes y gestiona su aprobación.
+        </p>
+    </div>
+
+    <!-- Resumen -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pagos pendientes</p>
+                    <h3 class="fw-bold text-warning">3</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pagos aprobados</p>
+                    <h3 class="fw-bold text-success">12</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pagos rechazados</p>
+                    <h3 class="fw-bold text-danger">2</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tabla de pagos -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Pagos pendientes de validación</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Pago</th>
+                            <th>Cliente</th>
+                            <th>Orden</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Fecha de reporte</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>#501</td>
+                            <td>Juan Pérez</td>
+                            <td>#1001</td>
+                            <td>₡50,000.00</td>
+                            <td>Transferencia bancaria</td>
+                            <td>25/10/2026</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    Reportado
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-success"
+                                            onclick="procesarPago('aprobar', 501)">
+                                        Aprobar
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="procesarPago('rechazar', 501)">
+                                        Rechazar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#502</td>
+                            <td>María Rodríguez</td>
+                            <td>#1002</td>
+                            <td>₡75,000.00</td>
+                            <td>Depósito bancario</td>
+                            <td>26/10/2026</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    Reportado
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-success"
+                                            onclick="procesarPago('aprobar', 502)">
+                                        Aprobar
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="procesarPago('rechazar', 502)">
+                                        Rechazar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#503</td>
+                            <td>Carlos Vargas</td>
+                            <td>#1003</td>
+                            <td>₡30,000.00</td>
+                            <td>Tarjeta</td>
+                            <td>27/10/2026</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    Reportado
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-success"
+                                            onclick="procesarPago('aprobar', 503)">
+                                        Aprobar
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="procesarPago('rechazar', 503)">
+                                        Rechazar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        function procesarPago(accion, pagoId) {
+            const mensaje = accion === "aprobar"
+                ? "¿Está seguro de que desea aprobar este pago?"
+                : "¿Está seguro de que desea rechazar este pago?";
+
+            if (confirm(mensaje)) {
+                alert("Acción visual de " + accion +
+                      " para el pago #" + pagoId +
+                      ". La operación todavía no está conectada.");
+            }
+        }
+    </script>
+}
