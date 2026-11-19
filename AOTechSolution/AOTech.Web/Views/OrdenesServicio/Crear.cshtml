@@ -1,0 +1,114 @@
+@model AOTech.Web.Models.OrdenServicioCrearViewModel
+
+@{
+    ViewData["Title"] = "Nueva orden de servicio";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Nueva orden de servicio</h1>
+            <p>Registra el ingreso de un vehículo al taller.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Crear" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label asp-for="ClienteId"></label>
+                <select asp-for="ClienteId" id="ClienteId">
+                    <option value="">Selecciona un cliente…</option>
+                    @foreach (var cliente in Model.ClientesDisponibles)
+                    {
+                        <option value="@cliente.ClienteId">@cliente.NombreCompleto</option>
+                    }
+                </select>
+                <span asp-validation-for="ClienteId" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="VehiculoId"></label>
+                <select asp-for="VehiculoId" id="VehiculoId">
+                    <option value="">Selecciona primero un cliente…</option>
+                </select>
+                <span asp-validation-for="VehiculoId" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Descripcion"></label>
+                <textarea asp-for="Descripcion" rows="4"></textarea>
+                <span asp-validation-for="Descripcion" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="FechaIngreso"></label>
+                <input asp-for="FechaIngreso" type="date" />
+                <span asp-validation-for="FechaIngreso" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="FechaEntregaEstimada"></label>
+                <input asp-for="FechaEntregaEstimada" type="date" />
+                <span class="ayuda">Opcional.</span>
+                <span asp-validation-for="FechaEntregaEstimada" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Registrar orden</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const vehiculos = @Html.Raw(Json.Serialize(Model.VehiculosDisponibles));
+        const vehiculoSeleccionadoInicial = "@Model.VehiculoId";
+
+        const clienteSelect = document.getElementById("ClienteId");
+        const vehiculoSelect = document.getElementById("VehiculoId");
+
+        function cargarVehiculos(clienteId, vehiculoSeleccionado) {
+            vehiculoSelect.innerHTML = "";
+
+            if (!clienteId) {
+                var opcion = document.createElement("option");
+                opcion.value = "";
+                opcion.text = "Selecciona primero un cliente…";
+                vehiculoSelect.appendChild(opcion);
+                return;
+            }
+
+            var opcionVacia = document.createElement("option");
+            opcionVacia.value = "";
+            opcionVacia.text = "Selecciona un vehículo…";
+            vehiculoSelect.appendChild(opcionVacia);
+
+            vehiculos
+                .filter(function (v) { return v.clienteId == clienteId; })
+                .forEach(function (v) {
+                    var opcion = document.createElement("option");
+                    opcion.value = v.vehiculoId;
+                    opcion.text = v.placa + " - " + v.marca + " " + v.modelo;
+                    if (vehiculoSeleccionado && v.vehiculoId == vehiculoSeleccionado) {
+                        opcion.selected = true;
+                    }
+                    vehiculoSelect.appendChild(opcion);
+                });
+        }
+
+        clienteSelect.addEventListener("change", function () {
+            cargarVehiculos(clienteSelect.value, null);
+        });
+
+        cargarVehiculos(clienteSelect.value, vehiculoSeleccionadoInicial);
+    </script>
+}

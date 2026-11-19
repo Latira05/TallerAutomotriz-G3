@@ -1,0 +1,70 @@
+@model List<AOTech.Web.Models.OrdenServicioListaViewModel>
+
+@{
+    ViewData["Title"] = "Órdenes de servicio";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Órdenes de servicio</h1>
+            <p>Órdenes registradas para el ingreso de vehículos al taller.</p>
+        </div>
+        <a asp-action="Crear" class="btn btn--primario">Nueva orden</a>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alerta alerta--exito">@TempData["Exito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alerta alerta--error">@TempData["Error"]</div>
+    }
+
+    <div class="tabla-wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="tabla-vacia">
+                <strong>Todavía no hay órdenes de servicio registradas</strong>
+                Crea la primera para empezar a dar seguimiento a los vehículos.
+            </div>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Estado</th>
+                        <th>Fecha de ingreso</th>
+                        <th>Entrega estimada</th>
+                        <th>Monto total</th>
+                        <th>Recepcionista</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orden in Model)
+                    {
+                        <tr>
+                            <td>@orden.Cliente</td>
+                            <td class="celda-mono">@orden.Vehiculo</td>
+                            <td>
+                                <span class="pastilla pastilla--activo">@orden.Estado</span>
+                            </td>
+                            <td class="celda-mono">@orden.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                            <td class="celda-mono">@(orden.FechaEntregaEstimada?.ToString("dd/MM/yyyy") ?? "—")</td>
+                            <td class="celda-mono">@orden.MontoTotal.ToString("C")</td>
+                            <td>@orden.Recepcionista</td>
+                            <td>
+                                <a asp-action="Editar" asp-route-id="@orden.OrdenServicioId" class="btn btn--fantasma btn--pequeno">Editar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

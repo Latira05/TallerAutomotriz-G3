@@ -128,6 +128,11 @@
                         <li><a asp-controller="Movimientos" asp-action="Salida" class="@(controlador == "Movimientos" ? "activo" : "")">Salida de repuestos</a></li>
                     }
 
+                    @if (User?.IsInRole("Administrador") == true || User?.IsInRole("Recepcionista") == true)
+                    {
+                        <li><a asp-controller="OrdenesServicio" asp-action="Index">Órdenes de Servicio</a></li>
+                    }
+
                     @if (User?.Identity?.IsAuthenticated == true)
                     {
                         <li>

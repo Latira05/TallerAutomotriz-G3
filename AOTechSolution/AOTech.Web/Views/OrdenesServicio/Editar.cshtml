@@ -1,0 +1,72 @@
+@model AOTech.Web.Models.OrdenServicioEditarViewModel
+
+@{
+    ViewData["Title"] = "Editar orden de servicio";
+}
+
+<section class="seccion">
+    <div class="seccion__cabecera">
+        <div>
+            <h1>Editar orden de servicio</h1>
+            <p>Actualiza el estado y los datos de seguimiento de la orden.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Editar" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="OrdenServicioId" />
+            <div asp-validation-summary="ModelOnly" class="alerta alerta--error" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="campo">
+                <label>Cliente</label>
+                <input value="@Model.Cliente" disabled />
+            </div>
+
+            <div class="campo">
+                <label>Vehículo</label>
+                <input value="@Model.Vehiculo" disabled />
+            </div>
+
+            <div class="campo">
+                <label>Fecha de ingreso</label>
+                <input value="@Model.FechaIngreso.ToString("dd/MM/yyyy")" disabled />
+            </div>
+
+            <div class="campo">
+                <label asp-for="Descripcion"></label>
+                <textarea asp-for="Descripcion" rows="4"></textarea>
+                <span asp-validation-for="Descripcion" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="FechaEntregaEstimada"></label>
+                <input asp-for="FechaEntregaEstimada" type="date" />
+                <span class="ayuda">Opcional.</span>
+                <span asp-validation-for="FechaEntregaEstimada" class="validacion"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Estado"></label>
+                <select asp-for="Estado">
+                    @foreach (var estado in Model.EstadosDisponibles)
+                    {
+                        <option value="@estado">@estado</option>
+                    }
+                </select>
+                <span asp-validation-for="Estado" class="validacion"></span>
+            </div>
+
+            <div class="form-acciones">
+                <button type="submit" class="btn btn--primario">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn--fantasma">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
