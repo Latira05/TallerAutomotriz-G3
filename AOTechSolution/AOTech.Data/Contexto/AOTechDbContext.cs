@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using AOTech.Data.Modelos;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,39 @@ public partial class AOTechDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // ==========================================
+        // AVISOS
+        // ==========================================
+
+        modelBuilder.Entity<Aviso>(entity =>
+        {
+            entity.HasKey(e => e.AvisoId);
+
+            entity.ToTable("Avisos", "Comunicaciones");
+        });
+
+        modelBuilder.Entity<AvisoDestinatario>(entity =>
+        {
+            entity.HasKey(e => new { e.AvisoId, e.UsuarioId })
+                .HasName("PK_AvisoDestinatarios");
+
+            entity.ToTable("AvisoDestinatarios", "Comunicaciones");
+
+            entity.HasOne(d => d.Aviso)
+                .WithMany(a => a.Destinatarios)
+                .HasForeignKey(d => d.AvisoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Usuario)
+                .WithMany()
+                .HasForeignKey(d => d.UsuarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        // ==========================================
+        // SERVICIOS
+        // ==========================================
+
         modelBuilder.Entity<CatalogoServicio>(entity =>
         {
             entity.HasKey(e => e.ServicioId);
@@ -91,7 +125,10 @@ public partial class AOTechDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(20)
                 .HasDefaultValue("Pendiente");
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysutcdatetime())");
+
+            entity.Property(e => e.FechaCreacion)
+                .HasDefaultValueSql("(sysutcdatetime())");
+
             entity.Property(e => e.Notas).HasMaxLength(300);
 
             entity.HasOne(d => d.AprobadaPorUsuario).WithMany(p => p.Cita)
@@ -112,23 +149,10 @@ public partial class AOTechDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Vehiculos");
         });
-        modelBuilder.Entity<AvisoDestinatario>(entity =>
-        {
-            entity.HasKey(e => new { e.AvisoId, e.UsuarioId })
-                .HasName("PK_AvisoDestinatarios");
 
-            entity.ToTable("AvisoDestinatarios", "Comunicaciones");
-
-            entity.HasOne(d => d.Aviso)
-                .WithMany(a => a.Destinatarios)
-                .HasForeignKey(d => d.AvisoId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(d => d.Usuario)
-                .WithMany()
-                .HasForeignKey(d => d.UsuarioId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-        });
+        // ==========================================
+        // CLIENTES
+        // ==========================================
 
         modelBuilder.Entity<Cliente>(entity =>
         {
@@ -225,6 +249,10 @@ public partial class AOTechDbContext : DbContext
             entity.Property(e => e.Motivo).HasMaxLength(200);
         });
 
+        // ==========================================
+        // MEMBRESÍAS
+        // ==========================================
+
         modelBuilder.Entity<Membresia>(entity =>
         {
             entity.ToTable("Membresias", "Clientes");
@@ -236,6 +264,7 @@ public partial class AOTechDbContext : DbContext
             entity.Property(e => e.CodigoBp)
                 .HasMaxLength(20)
                 .HasColumnName("CodigoBP");
+
             entity.Property(e => e.EstaActivo).HasDefaultValue(true);
             entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.TipoCliente).HasMaxLength(20);
@@ -245,6 +274,10 @@ public partial class AOTechDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Membresias_Clientes");
         });
+
+        // ==========================================
+        // INVENTARIO
+        // ==========================================
 
         modelBuilder.Entity<MovimientosInventario>(entity =>
         {
@@ -273,6 +306,10 @@ public partial class AOTechDbContext : DbContext
                 .HasConstraintName("FK_MovimientosInventario_Usuarios");
         });
 
+        // ==========================================
+        // ÓRDENES DE SERVICIO
+        // ==========================================
+
         modelBuilder.Entity<OrdenesServicio>(entity =>
         {
             entity.HasKey(e => e.OrdenServicioId);
@@ -289,6 +326,7 @@ public partial class AOTechDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(20)
                 .HasDefaultValue("Abierta");
+
             entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.FechaIngreso).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.MontoTotal).HasColumnType("decimal(10, 2)");
@@ -313,6 +351,10 @@ public partial class AOTechDbContext : DbContext
                 .HasConstraintName("FK_OrdenesServicio_Vehiculos");
         });
 
+        // ==========================================
+        // PAGOS
+        // ==========================================
+
         modelBuilder.Entity<Pago>(entity =>
         {
             entity.ToTable("Pagos", "Servicios");
@@ -324,6 +366,7 @@ public partial class AOTechDbContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(20)
                 .HasDefaultValue("Reportado");
+
             entity.Property(e => e.FechaReporte).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.MetodoPago).HasMaxLength(30);
             entity.Property(e => e.Monto).HasColumnType("decimal(10, 2)");
@@ -358,6 +401,10 @@ public partial class AOTechDbContext : DbContext
                 .HasConstraintName("FK_PagosMembresia_Membresias");
         });
 
+        // ==========================================
+        // AGENDA
+        // ==========================================
+
         modelBuilder.Entity<ReglasAgendum>(entity =>
         {
             entity.HasKey(e => e.ReglaId);
@@ -368,6 +415,10 @@ public partial class AOTechDbContext : DbContext
                 .HasForeignKey(d => d.ServicioId)
                 .HasConstraintName("FK_ReglasAgenda_CatalogoServicios");
         });
+
+        // ==========================================
+        // REPUESTOS
+        // ==========================================
 
         modelBuilder.Entity<Repuesto>(entity =>
         {
@@ -408,6 +459,10 @@ public partial class AOTechDbContext : DbContext
                 .HasForeignKey(d => d.OrdenServicioId)
                 .HasConstraintName("FK_RespuestasEncuesta_OrdenesServicio");
         });
+
+        // ==========================================
+        // SEGURIDAD
+        // ==========================================
 
         modelBuilder.Entity<Role>(entity =>
         {
@@ -462,6 +517,10 @@ public partial class AOTechDbContext : DbContext
                 .HasConstraintName("FK_Usuarios_Roles");
         });
 
+        // ==========================================
+        // VEHÍCULOS
+        // ==========================================
+
         modelBuilder.Entity<Vehiculo>(entity =>
         {
             entity.ToTable("Vehiculos", "Clientes");
@@ -482,6 +541,10 @@ public partial class AOTechDbContext : DbContext
                 .HasConstraintName("FK_Vehiculos_Clientes");
         });
 
+        // ==========================================
+        // CURSOS
+        // ==========================================
+
         modelBuilder.Entity<VideosCurso>(entity =>
         {
             entity.HasKey(e => e.VideoId);
@@ -498,6 +561,10 @@ public partial class AOTechDbContext : DbContext
                 .HasForeignKey(d => d.CursoId)
                 .HasConstraintName("FK_VideosCurso_Cursos");
         });
+
+        // ==========================================
+        // VISTAS
+        // ==========================================
 
         modelBuilder.Entity<VwSaldoCuentaCliente>(entity =>
         {
